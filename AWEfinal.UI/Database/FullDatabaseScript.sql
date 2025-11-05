@@ -66,6 +66,7 @@ CREATE TABLE [Products] (
     [Images] NVARCHAR(MAX) NOT NULL DEFAULT '[]',
     [Features] NVARCHAR(MAX) NOT NULL DEFAULT '[]',
     [InStock] BIT NOT NULL DEFAULT 1,
+    [StockQuantity] INT NOT NULL DEFAULT 0,
     [CreatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
     CONSTRAINT [PK_Products] PRIMARY KEY ([Id]),
     CONSTRAINT [CK_Products_Price] CHECK ([Price] > 0),

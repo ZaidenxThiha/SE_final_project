@@ -48,6 +48,9 @@ namespace AWEfinal.DAL.Models
         [Required]
         public bool InStock { get; set; } = true;
 
+        [Required]
+        public int StockQuantity { get; set; } = 0;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation properties

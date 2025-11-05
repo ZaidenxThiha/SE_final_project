@@ -48,6 +48,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT3JkZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Admin/PrintDeliveryNote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJpbnREZWxpdmVyeU5vdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Admin/PrintReceipt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJpbnRSZWNlaXB0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Admin/Products.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUHJvZHVjdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -70,6 +78,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Cart/OrderConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Cart/PrintReceipt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxQcmludFJlY2VpcHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Mac/Home/Desktop/SE LAB/AWEproject/AWEfinal.UI/Views/Home/Index.cshtml]

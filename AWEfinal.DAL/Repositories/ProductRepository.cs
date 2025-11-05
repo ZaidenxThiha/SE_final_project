@@ -38,9 +38,35 @@ namespace AWEfinal.DAL.Repositories
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-            return product;
+            // Check if entity is already being tracked by the context
+            var trackedEntity = _context.Products.Local.FirstOrDefault(p => p.Id == product.Id);
+            
+            if (trackedEntity != null)
+            {
+                // Entity is already tracked, update its properties
+                _context.Entry(trackedEntity).CurrentValues.SetValues(product);
+                await _context.SaveChangesAsync();
+                return trackedEntity;
+            }
+            else
+            {
+                // Check if entity exists in database but not tracked
+                var existingEntity = await _context.Products.FindAsync(product.Id);
+                if (existingEntity != null)
+                {
+                    // Entity exists but not tracked, update its properties
+                    _context.Entry(existingEntity).CurrentValues.SetValues(product);
+                    await _context.SaveChangesAsync();
+                    return existingEntity;
+                }
+                else
+                {
+                    // New entity or not found, use Update
+                    _context.Products.Update(product);
+                    await _context.SaveChangesAsync();
+                    return product;
+                }
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)

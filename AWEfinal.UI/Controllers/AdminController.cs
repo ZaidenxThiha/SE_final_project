@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AWEfinal.BLL.Services;
 using AWEfinal.DAL.Models;
+using System.Text.Json;
 
 namespace AWEfinal.UI.Controllers
 {
@@ -9,12 +10,14 @@ namespace AWEfinal.UI.Controllers
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly ILogger<AdminController> _logger;
+        private readonly IWebHostEnvironment _environment;
 
-        public AdminController(IProductService productService, IOrderService orderService, ILogger<AdminController> logger)
+        public AdminController(IProductService productService, IOrderService orderService, ILogger<AdminController> logger, IWebHostEnvironment environment)
         {
             _productService = productService;
             _orderService = orderService;
             _logger = logger;
+            _environment = environment;
         }
 
         private bool IsAdmin()
@@ -62,7 +65,7 @@ namespace AWEfinal.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct(Product product, IFormFileCollection? images)
         {
             if (!IsAdmin())
                 return RedirectToAction("Login", "Auth");
@@ -71,6 +74,43 @@ namespace AWEfinal.UI.Controllers
             {
                 try
                 {
+                    // Handle image uploads
+                    var imagePaths = new List<string>();
+                    if (images != null && images.Count > 0)
+                    {
+                        foreach (var image in images)
+                        {
+                            if (image != null && image.Length > 0)
+                            {
+                                var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "products");
+                                if (!Directory.Exists(uploadsFolder))
+                                {
+                                    Directory.CreateDirectory(uploadsFolder);
+                                }
+
+                                var uniqueFileName = $"{Guid.NewGuid()}_{image.FileName}";
+                                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                                {
+                                    await image.CopyToAsync(fileStream);
+                                }
+
+                                imagePaths.Add($"/images/products/{uniqueFileName}");
+                            }
+                        }
+                    }
+
+                    // Set images as JSON array
+                    if (imagePaths.Count > 0)
+                    {
+                        product.Images = JsonSerializer.Serialize(imagePaths);
+                    }
+                    else
+                    {
+                        product.Images = "[]";
+                    }
+
                     await _productService.CreateProductAsync(product);
                     return RedirectToAction("Products");
                 }
@@ -98,7 +138,7 @@ namespace AWEfinal.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(Product product)
+        public async Task<IActionResult> EditProduct(Product product, IFormFileCollection? images)
         {
             if (!IsAdmin())
                 return RedirectToAction("Login", "Auth");
@@ -107,7 +147,68 @@ namespace AWEfinal.UI.Controllers
             {
                 try
                 {
-                    await _productService.UpdateProductAsync(product);
+                    // Get existing product to preserve existing images and update it
+                    var existingProduct = await _productService.GetProductByIdAsync(product.Id);
+                    if (existingProduct == null)
+                    {
+                        ViewBag.Error = "Product not found";
+                        return View(product);
+                    }
+
+                    var existingImages = new List<string>();
+                    
+                    if (!string.IsNullOrEmpty(existingProduct.Images))
+                    {
+                        try
+                        {
+                            existingImages = JsonSerializer.Deserialize<List<string>>(existingProduct.Images) ?? new List<string>();
+                        }
+                        catch
+                        {
+                            existingImages = new List<string>();
+                        }
+                    }
+
+                    // Handle new image uploads
+                    if (images != null && images.Count > 0)
+                    {
+                        var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "products");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        foreach (var image in images)
+                        {
+                            if (image != null && image.Length > 0)
+                            {
+                                var uniqueFileName = $"{Guid.NewGuid()}_{image.FileName}";
+                                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                                {
+                                    await image.CopyToAsync(fileStream);
+                                }
+
+                                existingImages.Add($"/images/products/{uniqueFileName}");
+                            }
+                        }
+                    }
+
+                    // Update existing product properties from form model
+                    existingProduct.Name = product.Name;
+                    existingProduct.Price = product.Price;
+                    existingProduct.Category = product.Category;
+                    existingProduct.Description = product.Description;
+                    existingProduct.Storage = product.Storage;
+                    existingProduct.Rating = product.Rating;
+                    existingProduct.StockQuantity = product.StockQuantity;
+                    existingProduct.InStock = product.InStock;
+                    existingProduct.Images = existingImages.Count > 0 
+                        ? JsonSerializer.Serialize(existingImages) 
+                        : "[]";
+
+                    await _productService.UpdateProductAsync(existingProduct);
                     return RedirectToAction("Products");
                 }
                 catch (Exception ex)
@@ -159,6 +260,32 @@ namespace AWEfinal.UI.Controllers
                 ViewBag.Error = ex.Message;
                 return RedirectToAction("Orders");
             }
+        }
+
+        // Print Delivery Note
+        public async Task<IActionResult> PrintDeliveryNote(int id)
+        {
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Auth");
+
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+                return NotFound();
+
+            return View(order);
+        }
+
+        // Print Customer Receipt
+        public async Task<IActionResult> PrintReceipt(int id)
+        {
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Auth");
+
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+                return NotFound();
+
+            return View(order);
         }
 
         // Analytics

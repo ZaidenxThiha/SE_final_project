@@ -1,7 +1,20 @@
 @model AWEfinal.DAL.Models.Product
+@using System.Text.Json
 @{
     ViewData["Title"] = "Edit Product";
     Layout = "_AdminLayout";
+    var existingImages = new List<string>();
+    if (!string.IsNullOrEmpty(Model.Images))
+    {
+        try
+        {
+            existingImages = JsonSerializer.Deserialize<List<string>>(Model.Images) ?? new List<string>();
+        }
+        catch
+        {
+            existingImages = new List<string>();
+        }
+    }
 }
 
 <h2>Edit Product</h2>
@@ -11,7 +24,7 @@
     <div class="alert alert-danger">@ViewBag.Error</div>
 }
 
-<form asp-action="EditProduct" method="post">
+<form asp-action="EditProduct" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <div class="form-group mb-3">
         <label asp-for="Name">Name</label>
@@ -52,6 +65,33 @@
     <div class="form-group mb-3">
         <label asp-for="Rating">Rating</label>
         <input asp-for="Rating" class="form-control" type="number" step="0.1" min="0" max="5" />
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="StockQuantity">Stock Quantity (Units Left)</label>
+        <input asp-for="StockQuantity" class="form-control" type="number" min="0" required />
+        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        <small class="form-text text-muted">Enter the number of units available in stock</small>
+    </div>
+    <div class="form-group mb-3">
+        <label>Current Images</label>
+        @if (existingImages != null && existingImages.Any())
+        {
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                @foreach (var img in existingImages)
+                {
+                    <div class="position-relative" style="width: 150px;">
+                        <img src="@img" alt="Product Image" class="img-thumbnail" style="width: 100%; height: 150px; object-fit: cover;" />
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No images uploaded yet.</p>
+        }
+        <label>Add More Images</label>
+        <input type="file" name="images" class="form-control" accept="image/*" multiple />
+        <small class="form-text text-muted">You can select multiple images to add to this product</small>
     </div>
     <div class="form-group mb-3">
         <label>

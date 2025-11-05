@@ -166,7 +166,27 @@ namespace AWEfinal.UI.Controllers
             if (order == null)
                 return NotFound();
 
+            // Verify user owns this order
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null || order.UserId != userId.Value)
+                return Forbid();
+
             return View(order);
+        }
+
+        // Print Customer Receipt (for customers after checkout)
+        public async Task<IActionResult> PrintReceipt(int id)
+        {
+            var order = await _orderService.GetOrderByIdAsync(id);
+            if (order == null)
+                return NotFound();
+
+            // Verify user owns this order
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null || order.UserId != userId.Value)
+                return Forbid();
+
+            return View("PrintReceipt", order);
         }
 
         private List<CartItem> GetCart()

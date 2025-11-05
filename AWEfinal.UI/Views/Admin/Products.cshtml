@@ -19,6 +19,7 @@
                 <th class="px-4 py-3">Name</th>
                 <th class="px-4 py-3">Category</th>
                 <th class="px-4 py-3">Price</th>
+                <th class="px-4 py-3">Units Left</th>
                 <th class="px-4 py-3">Instock</th>
                 <th class="px-4 py-3">Action</th>
             </tr>
@@ -34,7 +35,12 @@
                         <td class="px-4 py-3">@product.Category</td>
                         <td class="px-4 py-3">$@product.Price.ToString("N2")</td>
                         <td class="px-4 py-3">
-                            @if (product.InStock)
+                            <span class="badge @(product.StockQuantity > 0 ? "bg-info" : "bg-warning")">
+                                @product.StockQuantity
+                            </span>
+                        </td>
+                        <td class="px-4 py-3">
+                            @if (product.InStock && product.StockQuantity > 0)
                             {
                                 <span class="badge bg-success">In Stock</span>
                             }
@@ -62,7 +68,7 @@
             else
             {
                 <tr>
-                    <td colspan="6" class="text-center py-4">No products found</td>
+                    <td colspan="7" class="text-center py-4">No products found</td>
                 </tr>
             }
         </tbody>

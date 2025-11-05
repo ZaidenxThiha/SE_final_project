@@ -120,6 +120,19 @@
                             }
                         </form>
                     </div>
+                    
+                    <!-- Print Buttons -->
+                    <div class="mb-3">
+                        <p class="text-muted mb-2 small">Print Documents</p>
+                        <div class="d-flex gap-2 flex-column">
+                            <a href="@Url.Action("PrintDeliveryNote", "Admin", new { id = selectedOrder.Id })" target="_blank" class="btn btn-awe-primary w-100">
+                                <i class="bi bi-printer"></i> Print Delivery Note
+                            </a>
+                            <a href="@Url.Action("PrintReceipt", "Admin", new { id = selectedOrder.Id })" target="_blank" class="btn btn-awe-secondary w-100">
+                                <i class="bi bi-receipt"></i> Print Customer Receipt
+                            </a>
+                        </div>
+                    </div>
                 </div>
             }
         }

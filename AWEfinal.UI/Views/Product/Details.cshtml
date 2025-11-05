@@ -1,10 +1,66 @@
 @model AWEfinal.DAL.Models.Product
+@using System.Text.Json
 @{
     ViewData["Title"] = "Product Details";
+    var productImages = new List<string>();
+    if (!string.IsNullOrEmpty(Model.Images))
+    {
+        try
+        {
+            productImages = JsonSerializer.Deserialize<List<string>>(Model.Images) ?? new List<string>();
+        }
+        catch
+        {
+            productImages = new List<string>();
+        }
+    }
+    var defaultImage = "/images/products/placeholder.jpg";
+    var mainImage = productImages.Any() ? productImages.First() : defaultImage;
 }
 
 <div class="container mt-4">
     <div class="row">
+        <div class="col-md-6">
+            @if (productImages.Any())
+            {
+                <div id="productImageCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < productImages.Count; i++)
+                        {
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@productImages[i]" class="d-block w-100" alt="@Model.Name" style="max-height: 500px; object-fit: contain;">
+                            </div>
+                        }
+                    </div>
+                    @if (productImages.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    }
+                </div>
+                @if (productImages.Count > 1)
+                {
+                    <div class="d-flex gap-2 mb-3">
+                        @foreach (var img in productImages)
+                        {
+                            <img src="@img" alt="Thumbnail" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" onclick="document.querySelector('#productImageCarousel .carousel-item.active img').src = this.src;" />
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="bg-light d-flex align-items-center justify-content-center mb-4" style="height: 400px;">
+                    <p class="text-muted">No image available</p>
+                </div>
+            }
+        </div>
         <div class="col-md-6">
             <h2>@Model.Name</h2>
             <hr />
@@ -34,9 +90,9 @@
             </p>
             
             <p><strong>In Stock:</strong> 
-                @if (Model.InStock)
+                @if (Model.InStock && Model.StockQuantity > 0)
                 {
-                    <span class="badge bg-success">Yes</span>
+                    <span class="badge bg-success">Yes (@Model.StockQuantity units left)</span>
                 }
                 else
                 {
@@ -45,7 +101,7 @@
             </p>
             
             <div class="mt-4">
-                @if (Model.InStock)
+                @if (Model.InStock && Model.StockQuantity > 0)
                 {
                     <a href="@Url.Action("AddToCart", "Cart", new { productId = Model.Id })" class="btn btn-success btn-lg me-2">Add to Cart</a>
                 }

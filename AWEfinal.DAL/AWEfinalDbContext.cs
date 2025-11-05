@@ -32,6 +32,7 @@ namespace AWEfinal.DAL
             {
                 entity.HasIndex(e => e.Category);
                 entity.Property(e => e.InStock).HasDefaultValue(true);
+                entity.Property(e => e.StockQuantity).HasDefaultValue(0);
                 entity.Property(e => e.Rating).HasDefaultValue(0);
                 entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             });

@@ -1,2 +1,4 @@
 wwwroot\css\site.css
+wwwroot\images\products\6260f36e-617d-4a51-824b-2f639584a88d_pd1.png
+wwwroot\images\products\README.md
 wwwroot\js\site.js
