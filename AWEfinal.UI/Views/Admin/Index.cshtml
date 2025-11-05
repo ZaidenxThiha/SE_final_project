@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-awe p-4">
+                    <h2 class="mb-4">Dashboard Overview</h2>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="stats-card text-center">
+                                <p class="stats-label mb-2">Total Products</p>
+                                <p class="stats-value text-primary">@ViewBag.TotalProducts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card text-center">
+                                <p class="stats-label mb-2">Total Orders</p>
+                                <p class="stats-value text-primary">@ViewBag.TotalOrders</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card text-center">
+                                <p class="stats-label mb-2">Total Revenue</p>
+                                <p class="stats-value text-success">$@(((decimal?)ViewBag.TotalRevenue ?? 0).ToString("N2"))</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card text-center">
+                                <p class="stats-label mb-2">Avg Order Value</p>
+                                <p class="stats-value text-info">$@(((decimal?)ViewBag.AvgOrderValue ?? 0).ToString("N2"))</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-muted">Select a tab above to manage products, orders, or view analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

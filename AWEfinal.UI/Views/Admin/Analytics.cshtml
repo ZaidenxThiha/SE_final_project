@@ -1,0 +1,234 @@
+@using System.Text.Json
+@using System.Linq
+@{
+    ViewData["Title"] = "Analytics";
+    Layout = "_AdminLayout";
+    var period = ViewBag.Period as string ?? "month";
+    var totalRevenue = ViewBag.TotalRevenue as decimal? ?? 0;
+    var totalOrders = ViewBag.TotalOrders as int? ?? 0;
+    var totalProducts = ViewBag.TotalProducts as int? ?? 0;
+    var avgOrderValue = ViewBag.AvgOrderValue as decimal? ?? 0;
+    var chartData = ViewBag.ChartData ?? new List<object>();
+    var chartDataJson = JsonSerializer.Serialize(chartData);
+    var topProducts = ViewBag.TopProducts as IEnumerable<object> ?? Enumerable.Empty<object>();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Sales Analytics</h2>
+    <form method="get" asp-action="Analytics" class="d-inline">
+        <select name="period" class="form-select border-2 border-black rounded" style="width: auto; background-color: #EDEECE;" onchange="this.form.submit()">
+            <option value="day" selected="@(period == "day")">Daily (Last 7 Days)</option>
+            <option value="week" selected="@(period == "week")">Weekly (Last 4 Weeks)</option>
+            <option value="month" selected="@(period == "month")">Monthly (Last 6 Months)</option>
+            <option value="year" selected="@(period == "year")">Yearly (Last 2 Years)</option>
+            <option value="ytd" selected="@(period == "ytd")">Year to Date</option>
+        </select>
+    </form>
+</div>
+
+<!-- Summary Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <p class="text-muted mb-0 small">Total Revenue</p>
+                <i class="bi bi-currency-dollar text-success fs-4"></i>
+            </div>
+            <p class="mb-0 fs-2 fw-bold">$@totalRevenue.ToString("N2")</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <p class="text-muted mb-0 small">Total Orders</p>
+                <i class="bi bi-cart text-primary fs-4"></i>
+            </div>
+            <p class="mb-0 fs-2 fw-bold">@totalOrders</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <p class="text-muted mb-0 small">Product Sold</p>
+                <i class="bi bi-box text-purple fs-4"></i>
+            </div>
+            <p class="mb-0 fs-2 fw-bold">@totalProducts</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <p class="text-muted mb-0 small">Average Order Value</p>
+                <i class="bi bi-graph-up text-warning fs-4"></i>
+            </div>
+            <p class="mb-0 fs-2 fw-bold">$@avgOrderValue.ToString("N2")</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Charts (Left) -->
+    <div class="col-md-8">
+        <!-- Revenue Chart -->
+        <div class="stats-card mb-4">
+            <h3 class="mb-4">Revenue Trend</h3>
+            <div style="height: 300px; position: relative;">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Orders Chart -->
+        <div class="stats-card">
+            <h3 class="mb-4">Orders and Products Sold</h3>
+            <div style="height: 300px; position: relative;">
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Selling Products (Right) -->
+    <div class="col-md-4">
+        <div class="stats-card">
+            <h3 class="mb-4">Top Selling Products</h3>
+            @if (topProducts != null && topProducts.Any())
+            {
+                <div class="list-group">
+                    @foreach (dynamic product in topProducts)
+                    {
+                        <div class="list-group-item border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="mb-1 fw-bold">@(product?.Name ?? "Unknown")</p>
+                                    <p class="mb-0 small text-muted">@(product?.Quantity ?? 0) sold</p>
+                                </div>
+                                <span class="badge bg-primary">$@((product?.TotalRevenue ?? 0).ToString("N2"))</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted text-center py-4">No sales data available</p>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const chartData = @Html.Raw(chartDataJson);
+    
+    console.log('Chart Data:', chartData);
+    
+    // Handle both uppercase and lowercase property names
+    const labels = chartData.map(d => d.date || d.Date || '');
+    const revenueData = chartData.map(d => parseFloat(d.revenue || d.Revenue || 0));
+    const ordersData = chartData.map(d => parseInt(d.orders || d.Orders || 0));
+    const productsData = chartData.map(d => parseInt(d.products || d.Products || 0));
+    
+    console.log('Labels:', labels);
+    console.log('Revenue Data:', revenueData);
+    console.log('Orders Data:', ordersData);
+    console.log('Products Data:', productsData);
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCharts);
+    } else {
+        initCharts();
+    }
+    
+    function initCharts() {
+        // Revenue Line Chart
+        const revenueCtx = document.getElementById('revenueChart');
+        if (!revenueCtx) {
+            console.error('Revenue chart canvas not found');
+            return;
+        }
+        
+        new Chart(revenueCtx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: revenueData,
+                    borderColor: '#073634',
+                    backgroundColor: 'rgba(7, 54, 52, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        
+        // Orders Bar Chart
+        const ordersCtx = document.getElementById('ordersChart');
+        if (!ordersCtx) {
+            console.error('Orders chart canvas not found');
+            return;
+        }
+        
+        new Chart(ordersCtx.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Orders',
+                    data: ordersData,
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#073634',
+                    borderWidth: 2
+                }, {
+                    label: 'Products',
+                    data: productsData,
+                    backgroundColor: '#8b5cf6',
+                    borderColor: '#073634',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,61 @@
+@model AWEfinal.DAL.Models.Order
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Order Information</h4>
+        <p><strong>Order Number:</strong> @Model.OrderNumber</p>
+        <p><strong>Invoice Number:</strong> @Model.InvoiceNumber</p>
+        <p><strong>Date:</strong> @Model.CreatedAt.ToString("MM/dd/yyyy HH:mm")</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        @if (!string.IsNullOrEmpty(Model.TrackingNumber))
+        {
+            <p><strong>Tracking Number:</strong> @Model.TrackingNumber</p>
+        }
+        <p><strong>Total:</strong> $@Model.Total.ToString("N2")</p>
+    </div>
+    <div class="col-md-6">
+        <h4>Shipping Information</h4>
+        <p>@Model.ShippingFullName</p>
+        <p>@Model.ShippingAddress</p>
+        <p>@Model.ShippingCity, @Model.ShippingPostalCode</p>
+        <p>@Model.ShippingCountry</p>
+        <p><strong>Phone:</strong> @Model.ShippingPhone</p>
+    </div>
+</div>
+
+<h4>Order Items</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>$@item.Price.ToString("N2")</td>
+                <td>$@item.Subtotal.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total:</strong></td>
+            <td><strong>$@Model.Total.ToString("N2")</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<a href="@Url.Action("Index", "Order")" class="btn btn-secondary">Back to Orders</a>
+

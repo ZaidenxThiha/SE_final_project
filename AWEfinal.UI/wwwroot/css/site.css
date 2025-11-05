@@ -1,0 +1,182 @@
+/* AWE Store Color Scheme */
+:root {
+  --awe-primary: #073634;
+  --awe-background: #EDEECE;
+  --awe-border: #000000;
+}
+
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 60px;
+  padding-bottom: 60px;
+  background-color: var(--awe-background);
+}
+
+/* AWE Store Navigation */
+.navbar-awe {
+  background-color: var(--awe-primary);
+  color: white;
+  border-bottom: 2px solid var(--awe-border);
+}
+
+.navbar-awe .navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+  letter-spacing: 0.05em;
+}
+
+.navbar-awe .nav-link {
+  color: white;
+}
+
+.navbar-awe .nav-link:hover {
+  opacity: 0.9;
+}
+
+/* AWE Store Cards */
+.card-awe {
+  border: 2px solid var(--awe-border);
+  border-radius: 0.5rem;
+  background-color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-awe:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* AWE Store Buttons */
+.btn-awe-primary {
+  background-color: var(--awe-primary);
+  color: white;
+  border: 2px solid var(--awe-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+}
+
+.btn-awe-primary:hover {
+  background-color: #052a28;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-awe-secondary {
+  background-color: var(--awe-background);
+  color: var(--awe-border);
+  border: 2px solid var(--awe-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-awe-secondary:hover {
+  background-color: #e0d9b0;
+}
+
+/* AWE Store Tables */
+.table-awe {
+  border: 2px solid var(--awe-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.table-awe thead {
+  background-color: var(--awe-background);
+  border-bottom: 2px solid var(--awe-border);
+}
+
+.table-awe tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-awe tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* AWE Store Forms */
+.form-control-awe {
+  border: 2px solid var(--awe-border);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-control-awe:focus {
+  border-color: var(--awe-primary);
+  box-shadow: 0 0 0 0.2rem rgba(7, 54, 52, 0.25);
+  outline: none;
+}
+
+/* AWE Store Tabs */
+.tab-nav {
+  border-bottom: 2px solid var(--awe-border);
+  background-color: white;
+}
+
+.tab-nav .nav-link {
+  border: 2px solid var(--awe-border);
+  border-bottom: none;
+  background-color: #e9ecef;
+  margin-bottom: -2px;
+  padding: 0.75rem 1.5rem;
+}
+
+.tab-nav .nav-link.active {
+  background-color: white;
+  border-bottom-color: white;
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+  background-color: white;
+  border-top: 2px solid var(--awe-border);
+}
+
+.main-content {
+  min-height: calc(100vh - 200px);
+  background-color: var(--awe-background);
+}
+
+/* Chart Container */
+.chart-container {
+  background-color: white;
+  border: 2px solid var(--awe-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+/* Stats Cards */
+.stats-card {
+  background-color: white;
+  border: 2px solid var(--awe-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.stats-card .stats-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.stats-card .stats-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+

@@ -1,0 +1,14 @@
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\bin\Debug\net8.0\AWEfinal.DAL.deps.json
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\bin\Debug\net8.0\AWEfinal.DAL.runtimeconfig.json
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\bin\Debug\net8.0\AWEfinal.DAL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\bin\Debug\net8.0\AWEfinal.DAL.pdb
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.csproj.AssemblyReference.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.AssemblyInfoInputs.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.AssemblyInfo.cs
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.csproj.CoreCompileInputs.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\refint\AWEfinal.DAL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.pdb
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\AWEfinal.DAL.genruntimeconfig.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.DAL\obj\Debug\net8.0\ref\AWEfinal.DAL.dll

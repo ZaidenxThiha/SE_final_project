@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="alert alert-danger">
+                <h1 class="display-4">Error</h1>
+                <p class="lead">An error occurred while processing your request.</p>
+                <p>Please try again later or contact support if the problem persists.</p>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+

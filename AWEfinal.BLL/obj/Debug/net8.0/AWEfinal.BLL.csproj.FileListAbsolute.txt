@@ -1,0 +1,15 @@
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.deps.json
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.pdb
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.pdb
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.AssemblyReference.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfoInputs.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfo.cs
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.CoreCompileInputs.cache
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.B2D8BB20.Up2Date
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\refint\AWEfinal.BLL.dll
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.pdb
+C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\ref\AWEfinal.BLL.dll

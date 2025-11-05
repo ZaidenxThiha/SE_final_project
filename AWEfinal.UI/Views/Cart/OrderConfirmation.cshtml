@@ -1,0 +1,64 @@
+@model AWEfinal.DAL.Models.Order
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="alert alert-success">
+    <h2>Order Confirmed!</h2>
+    <p>Thank you for your order. Your order number is: <strong>@Model.OrderNumber</strong></p>
+    @if (!string.IsNullOrEmpty(Model.InvoiceNumber))
+    {
+        <p>Invoice Number: <strong>@Model.InvoiceNumber</strong></p>
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Order Summary</h4>
+        <p><strong>Total:</strong> $@Model.Total.ToString("N2")</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        <p><strong>Payment Method:</strong> @Model.PaymentMethod</p>
+    </div>
+    <div class="col-md-6">
+        <h4>Shipping Information</h4>
+        <p>@Model.ShippingFullName</p>
+        <p>@Model.ShippingAddress</p>
+        <p>@Model.ShippingCity, @Model.ShippingPostalCode</p>
+        <p>@Model.ShippingCountry</p>
+    </div>
+</div>
+
+<h4>Order Items</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>$@item.Price.ToString("N2")</td>
+                <td>$@item.Subtotal.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total:</strong></td>
+            <td><strong>$@Model.Total.ToString("N2")</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="mt-3">
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Continue Shopping</a>
+    <a href="@Url.Action("Index", "Order")" class="btn btn-secondary">View My Orders</a>
+</div>
+
