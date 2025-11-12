@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {}
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {}
   },
   "projects": {
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
+        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
         "projectName": "AWEfinal.DAL",
-        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
+        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\obj\\",
+        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

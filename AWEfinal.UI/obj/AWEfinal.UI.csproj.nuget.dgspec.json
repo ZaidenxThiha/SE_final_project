@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj": {}
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj": {}
   },
   "projects": {
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj": {
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj",
+        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj",
         "projectName": "AWEfinal.BLL",
-        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj",
+        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\obj\\",
+        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
-                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj"
+              "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
+                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj"
               }
             }
           }
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
+        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
         "projectName": "AWEfinal.DAL",
-        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
+        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\obj\\",
+        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -156,14 +156,14 @@
         }
       }
     },
-    "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj": {
+    "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj",
+        "projectUniqueName": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj",
         "projectName": "AWEfinal.UI",
-        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj",
+        "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.UI\\AWEfinal.UI.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.UI\\obj\\",
+        "outputPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.UI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -185,11 +185,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj": {
-                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj"
+              "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj": {
+                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.BLL\\AWEfinal.BLL.csproj"
               },
-              "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
-                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj"
+              "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj": {
+                "projectPath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj"
               }
             }
           }

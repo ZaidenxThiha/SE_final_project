@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4IWr0fzWz/k=",
+  "dgSpecHash": "Nq9vX73v/Q8=",
   "success": true,
-  "projectFilePath": "C:\\Mac\\Home\\Desktop\\SE LAB\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
+  "projectFilePath": "C:\\Mac\\Home\\Desktop\\SE LAB\\FInal\\AWEproject\\AWEfinal.DAL\\AWEfinal.DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

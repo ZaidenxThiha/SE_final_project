@@ -1,4 +1,7 @@
 wwwroot\css\site.css
 wwwroot\images\products\6260f36e-617d-4a51-824b-2f639584a88d_pd1.png
+wwwroot\images\products\7ae4284d-96b2-4d6a-b500-93c23edd2dca_pd3.jpg
+wwwroot\images\products\bcba30da-013f-4029-908d-c9ebd0345c4b_pd2.jpg
+wwwroot\images\products\bf627202-0335-4284-bba3-064ff9402ef2_pd1.png
 wwwroot\images\products\README.md
 wwwroot\js\site.js

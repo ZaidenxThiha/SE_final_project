@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using AWEfinal.BLL.Services;
 using AWEfinal.DAL.Models;
+using System;
+using System.Linq;
 
 namespace AWEfinal.UI.Controllers
 {
@@ -15,24 +17,39 @@ namespace AWEfinal.UI.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(string? category)
+        public async Task<IActionResult> Index(string? category, string? searchTerm, string? sort)
         {
-            IEnumerable<Product> products;
-            
-            if (!string.IsNullOrEmpty(category) && category != "All")
+            IEnumerable<Product> products = (!string.IsNullOrEmpty(category) && !string.Equals(category, "All", StringComparison.OrdinalIgnoreCase))
+                ? await _productService.GetProductsByCategoryAsync(category)
+                : await _productService.GetAllProductsAsync();
+
+            var productList = products.ToList();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                products = await _productService.GetProductsByCategoryAsync(category);
+                var term = searchTerm.Trim();
+                productList = productList
+                    .Where(p =>
+                        (!string.IsNullOrEmpty(p.Name) && p.Name.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                        (!string.IsNullOrEmpty(p.Category) && p.Category.Contains(term, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
             }
-            else
+
+            sort = string.IsNullOrWhiteSpace(sort) ? "price-asc" : sort.Trim().ToLowerInvariant();
+            productList = sort switch
             {
-                products = await _productService.GetAllProductsAsync();
-            }
+                "price-desc" => productList.OrderByDescending(p => p.Price).ToList(),
+                "name-asc" => productList.OrderBy(p => p.Name).ToList(),
+                _ => productList.OrderBy(p => p.Price).ToList()
+            };
 
             ViewBag.Categories = new[] { "All", "Smartphones", "Laptops", "Tablets", "Headphones", 
                 "Smart TVs", "Cameras", "Smartwatches", "Gaming Consoles", "Speakers", "Monitors" };
             ViewBag.SelectedCategory = category ?? "All";
+            ViewBag.SearchTerm = searchTerm ?? string.Empty;
+            ViewBag.Sort = sort;
 
-            return View(products.ToList());
+            return View(productList);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -48,4 +65,3 @@ namespace AWEfinal.UI.Controllers
         }
     }
 }
-

@@ -1,5 +1,6 @@
 @model AWEfinal.DAL.Models.Product
 @using System.Text.Json
+@using System.Linq
 @{
     ViewData["Title"] = "Product Details";
     var productImages = new List<string>();
@@ -18,100 +19,113 @@
     var mainImage = productImages.Any() ? productImages.First() : defaultImage;
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            @if (productImages.Any())
+<section class="awe-section">
+    <div class="awe-section__header">
+        <div>
+            <h1 class="awe-section__title">@Model.Name</h1>
+            <p class="awe-section__subtitle">@Model.Category</p>
+        </div>
+        <a class="awe-btn awe-btn--ghost" asp-action="Index">Back to products</a>
+    </div>
+
+    <div class="awe-product-detail">
+        <div class="awe-product-gallery">
+            <div class="awe-product-gallery__main">
+                <img id="mainProductImage"
+                     src="@mainImage"
+                     alt="@Model.Name"
+                     onerror="this.src='@defaultImage';" />
+            </div>
+
+            @if (productImages.Count > 1)
             {
-                <div id="productImageCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @for (int i = 0; i < productImages.Count; i++)
-                        {
-                            <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <img src="@productImages[i]" class="d-block w-100" alt="@Model.Name" style="max-height: 500px; object-fit: contain;">
-                            </div>
-                        }
-                    </div>
-                    @if (productImages.Count > 1)
+                <div class="awe-product-gallery__thumbs">
+                    @for (int i = 0; i < productImages.Count; i++)
                     {
-                        <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        var img = productImages[i];
+                        <div class="awe-product-gallery__thumb @(i == 0 ? "is-active" : string.Empty)" data-thumb="@img">
+                            <img src="@img" alt="Thumbnail for @Model.Name" loading="lazy" />
+                        </div>
                     }
-                </div>
-                @if (productImages.Count > 1)
-                {
-                    <div class="d-flex gap-2 mb-3">
-                        @foreach (var img in productImages)
-                        {
-                            <img src="@img" alt="Thumbnail" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" onclick="document.querySelector('#productImageCarousel .carousel-item.active img').src = this.src;" />
-                        }
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="bg-light d-flex align-items-center justify-content-center mb-4" style="height: 400px;">
-                    <p class="text-muted">No image available</p>
                 </div>
             }
         </div>
-        <div class="col-md-6">
-            <h2>@Model.Name</h2>
-            <hr />
-            <p><strong>Category:</strong> <span class="badge bg-secondary">@Model.Category</span></p>
-            <p><strong class="fs-4 text-primary">Price: $@Model.Price.ToString("N2")</strong></p>
-            <p><strong>Description:</strong></p>
-            <p>@Model.Description</p>
-            
-            @if (!string.IsNullOrEmpty(Model.Storage))
-            {
-                <p><strong>Storage:</strong> @Model.Storage</p>
-            }
-            
-            <p><strong>Rating:</strong> 
-                @for (int i = 0; i < 5; i++)
+
+        <div class="awe-surface awe-product-panel">
+            <div class="awe-product-price">$@Model.Price.ToString("N2")</div>
+            <div class="awe-tagline">
+                Inspired by the ProductDetailPage.tsx layout—clean typography, tactile borders, and responsive sections keep the focus on the product.
+            </div>
+
+            <div class="awe-meta-grid">
+                <span><strong>Category:</strong> @Model.Category</span>
+                @if (!string.IsNullOrEmpty(Model.Storage))
                 {
-                    if (i < (int)Model.Rating)
+                    <span><strong>Configuration:</strong> @Model.Storage</span>
+                }
+                <span>
+                    <strong>Status:</strong>
+                    @if (Model.InStock && Model.StockQuantity > 0)
                     {
-                        <span class="text-warning">★</span>
+                        <span class="text-success">In stock — @Model.StockQuantity units left</span>
                     }
                     else
                     {
-                        <span class="text-muted">☆</span>
+                        <span class="text-danger">Currently unavailable</span>
+                    }
+                </span>
+            </div>
+
+            <div class="awe-rating">
+                @for (int i = 0; i < 5; i++)
+                {
+                    if (i < (int)Math.Round(Model.Rating))
+                    {
+                        <i class="bi bi-star-fill text-warning"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-star text-warning"></i>
                     }
                 }
-                (@Model.Rating / 5.0)
-            </p>
-            
-            <p><strong>In Stock:</strong> 
+                <span>@Model.Rating.ToString("0.0") / 5.0</span>
+            </div>
+
+            <p>@Model.Description</p>
+
+            <div class="awe-cta-group">
                 @if (Model.InStock && Model.StockQuantity > 0)
                 {
-                    <span class="badge bg-success">Yes (@Model.StockQuantity units left)</span>
+                    <a class="awe-btn awe-btn--primary" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.Id">
+                        Add to cart
+                    </a>
                 }
                 else
                 {
-                    <span class="badge bg-danger">No</span>
+                    <span class="awe-btn awe-btn--light is-disabled">Out of stock</span>
                 }
-            </p>
-            
-            <div class="mt-4">
-                @if (Model.InStock && Model.StockQuantity > 0)
-                {
-                    <a href="@Url.Action("AddToCart", "Cart", new { productId = Model.Id })" class="btn btn-success btn-lg me-2">Add to Cart</a>
-                }
-                else
-                {
-                    <button class="btn btn-secondary btn-lg me-2" disabled>Out of Stock</button>
-                }
-                <a href="@Url.Action("Index", "Product")" class="btn btn-outline-secondary btn-lg">Back to Products</a>
+                <a class="awe-btn awe-btn--ghost" asp-action="Index">Keep browsing</a>
             </div>
         </div>
     </div>
-</div>
+</section>
 
+@section Scripts {
+    <script>
+        (function () {
+            const main = document.getElementById('mainProductImage');
+            const thumbs = document.querySelectorAll('.awe-product-gallery__thumb');
+            if (!main || thumbs.length === 0) return;
+
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    const src = thumb.getAttribute('data-thumb');
+                    if (!src) return;
+                    main.src = src;
+                    thumbs.forEach(t => t.classList.remove('is-active'));
+                    thumb.classList.add('is-active');
+                });
+            });
+        })();
+    </script>
+}

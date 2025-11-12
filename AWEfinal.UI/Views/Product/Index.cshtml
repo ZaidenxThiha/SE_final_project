@@ -1,77 +1,158 @@
 @model List<AWEfinal.DAL.Models.Product>
 @using System.Text.Json
+@using System.Linq
 @{
     ViewData["Title"] = "Products";
     var categories = ViewBag.Categories as string[] ?? new[] { "All", "Smartphones", "Laptops", "Tablets", "Headphones", "Smart TVs", "Cameras", "Smartwatches", "Gaming Consoles", "Speakers", "Monitors" };
     var selectedCategory = ViewBag.SelectedCategory as string ?? "All";
+    var searchTerm = ViewBag.SearchTerm as string ?? string.Empty;
+    var sort = ViewBag.Sort as string ?? "price-asc";
+    var previewColors = new[] { "#E8D5E8", "#C5D9E8", "#E8E8E8", "#D5E8D5" };
+    var sortLabels = new Dictionary<string, string>
+    {
+        ["price-asc"] = "Price Increasing",
+        ["price-desc"] = "Price Decreasing",
+        ["name-asc"] = "Name A - Z"
+    };
 }
 
-<h2>Products</h2>
+<section class="awe-section">
 
-<div class="row mb-3">
-    <div class="col-md-12">
-        <form method="get" asp-action="Index" class="d-flex gap-2 align-items-center">
-            <label for="category" class="form-label mb-0">Category:</label>
-            <select name="category" id="category" class="form-select" style="width: auto;">
-                @foreach (var cat in categories)
-                {
-                    <option value="@cat" selected="@(selectedCategory == cat)">@cat</option>
-                }
-            </select>
-            <button type="submit" class="btn btn-primary">Filter</button>
-            <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Clear Filter</a>
-        </form>
-    </div>
-</div>
-
-@if (Model == null || !Model.Any())
-{
-    <div class="alert alert-info">
-        <p>No products found in this category.</p>
-        <a href="@Url.Action("Index", "Product")" class="btn btn-primary">View All Products</a>
-    </div>
-}
-else
-{
-    <div class="row">
-        @foreach (var product in Model)
-        {
-            var productImages = new List<string>();
-            if (!string.IsNullOrEmpty(product.Images))
-            {
-                try
-                {
-                    productImages = JsonSerializer.Deserialize<List<string>>(product.Images) ?? new List<string>();
-                }
-                catch
-                {
-                    productImages = new List<string>();
-                }
-            }
-            var productImage = productImages.Any() ? productImages.First() : "/images/products/placeholder.jpg";
-            
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <img src="@productImage" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;" onerror="this.src='/images/products/placeholder.jpg';">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@product.Name</h5>
-                        <p class="card-text text-muted">@product.Category</p>
-                        <p class="card-text"><strong class="text-primary fs-4">$@product.Price.ToString("N2")</strong></p>
-                        <div class="mt-auto">
-                            <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-primary btn-sm w-100 mb-2">View Details</a>
-                            @if (product.InStock && product.StockQuantity > 0)
-                            {
-                                <a href="@Url.Action("AddToCart", "Cart", new { productId = product.Id })" class="btn btn-success btn-sm w-100">Add to Cart</a>
-                            }
-                            else
-                            {
-                                <button class="btn btn-secondary btn-sm w-100" disabled>Out of Stock</button>
-                            }
-                        </div>
-                    </div>
+    <div class="awe-catalog">
+        <aside class="awe-catalog__filters">
+            <div class="awe-filter-card">
+                <div class="awe-filter-card__header">
+                    <span>Categories</span>
+                </div>
+                <div class="awe-filter-card__body">
+                    @foreach (var category in categories)
+                    {
+                        var isSelected = string.Equals(selectedCategory, category, StringComparison.OrdinalIgnoreCase);
+                        <a class="awe-filter-btn @(isSelected ? "is-active" : string.Empty)"
+                           asp-controller="Product"
+                           asp-action="Index"
+                           asp-route-category="@category"
+                           asp-route-searchTerm="@searchTerm"
+                           asp-route-sort="@sort">
+                            @category
+                        </a>
+                    }
                 </div>
             </div>
-        }
-    </div>
-}
 
+            <div class="awe-filter-card">
+                <div class="awe-filter-card__header">
+                    <span>Sort by</span>
+                    <i class="bi bi-sliders"></i>
+                </div>
+                <div class="awe-filter-card__body">
+                    @foreach (var option in sortLabels)
+                    {
+                        var isSelected = string.Equals(sort, option.Key, StringComparison.OrdinalIgnoreCase);
+                        <a class="awe-filter-btn @(isSelected ? "is-active" : string.Empty)"
+                           asp-controller="Product"
+                           asp-action="Index"
+                           asp-route-category="@selectedCategory"
+                           asp-route-searchTerm="@searchTerm"
+                           asp-route-sort="@option.Key">
+                            @option.Value
+                        </a>
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <div class="awe-catalog__results">
+            <div class="awe-results__header">
+                <form method="get" asp-action="Index" class="awe-results__search">
+                    <input type="hidden" name="category" value="@selectedCategory" />
+                    <input type="hidden" name="sort" value="@sort" />
+                    <div class="awe-search">
+                        <i class="bi bi-search awe-search__icon"></i>
+                        <input type="text" name="searchTerm" placeholder="Search products..." value="@searchTerm" />
+                    </div>
+                </form>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="awe-empty-state">
+                    <h3>No products found</h3>
+                    <p class="awe-tagline">Try clearing the filters or switching categories to keep exploring.</p>
+                    <a class="awe-btn awe-btn--primary mt-3" asp-controller="Product" asp-action="Index">Reset filters</a>
+                </div>
+            }
+            else
+            {
+                <div class="awe-product-grid">
+                    @foreach (var product in Model)
+                    {
+                        var productImages = new List<string>();
+                        if (!string.IsNullOrEmpty(product.Images))
+                        {
+                            try
+                            {
+                                productImages = JsonSerializer.Deserialize<List<string>>(product.Images) ?? new List<string>();
+                            }
+                            catch
+                            {
+                                productImages = new List<string>();
+                            }
+                        }
+
+                        var productImage = productImages.FirstOrDefault() ?? "/images/products/placeholder.jpg";
+                        var inventoryCopy = product.InStock && product.StockQuantity > 0
+                            ? $"{product.StockQuantity} left in stock"
+                            : "Currently unavailable";
+
+                        <div class="awe-product-card">
+                            <div class="awe-product-card__media">
+                                <div class="awe-product-card__image">
+                                    <img src="@productImage"
+                                         alt="@product.Name"
+                                         loading="lazy"
+                                         onerror="this.src='/images/products/placeholder.jpg';" />
+                                </div>
+                                <div class="awe-product-card__preview">
+                                    @foreach (var color in previewColors)
+                                    {
+                                        <span style="background-color: @color;"></span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="awe-product-card__info">
+                                <div class="awe-product-card__meta">
+                                    <div class="awe-product-card__name">@product.Name</div>
+                                    <div class="awe-product-card__category">@product.Category</div>
+                                </div>
+                                <a class="awe-product-card__add" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id" title="Add to cart">
+                                    <i class="bi bi-plus-lg"></i>
+                                </a>
+                            </div>
+
+                            <div class="awe-product-card__price">$@product.Price.ToString("N2")</div>
+                            <div class="awe-tagline">@inventoryCopy</div>
+
+                            <div class="awe-product-card__actions">
+                                <a class="awe-btn awe-btn--primary" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                    View details
+                                </a>
+                                @if (product.InStock && product.StockQuantity > 0)
+                                {
+                                    <a class="awe-btn awe-btn--light" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id">
+                                        Add to cart
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="awe-btn awe-btn--light is-disabled">Out of stock</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>
