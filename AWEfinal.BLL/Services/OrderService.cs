@@ -90,11 +90,24 @@ namespace AWEfinal.BLL.Services
             if (order == null)
                 throw new ArgumentException("Order not found", nameof(orderId));
 
-            order.Status = status.ToLower();
+            var normalizedStatus = status.ToLower();
+            order.Status = normalizedStatus;
             order.UpdatedAt = DateTime.UtcNow;
 
             if (!string.IsNullOrWhiteSpace(trackingNumber))
                 order.TrackingNumber = trackingNumber;
+
+            var shouldAdjustInventory = normalizedStatus is "paid" or "packaging" or "shipped" or "delivered";
+            if (shouldAdjustInventory && !order.InventoryAdjusted)
+            {
+                await AdjustInventoryAsync(order, decrease: true);
+                order.InventoryAdjusted = true;
+            }
+            else if (normalizedStatus == "cancelled" && order.InventoryAdjusted)
+            {
+                await AdjustInventoryAsync(order, decrease: false);
+                order.InventoryAdjusted = false;
+            }
 
             return await _orderRepository.UpdateAsync(order);
         }
@@ -116,6 +129,27 @@ namespace AWEfinal.BLL.Services
         {
             return $"INV-{DateTime.UtcNow:yyyyMMddHHmmss}-{new Random().Next(1000, 9999)}";
         }
+
+        private async Task AdjustInventoryAsync(Order order, bool decrease)
+        {
+            foreach (var item in order.OrderItems)
+            {
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null)
+                    continue;
+
+                if (decrease)
+                {
+                    product.StockQuantity = Math.Max(0, product.StockQuantity - item.Quantity);
+                }
+                else
+                {
+                    product.StockQuantity += item.Quantity;
+                }
+
+                product.InStock = product.StockQuantity > 0;
+                await _productRepository.UpdateAsync(product);
+            }
+        }
     }
 }
-

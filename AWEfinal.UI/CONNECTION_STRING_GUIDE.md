@@ -31,7 +31,7 @@ Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AWEfinal;Integrated Security=
 ### Option 3: Using Named Pipe (if you know the exact pipe)
 
 ```
-Server=np:\\.\pipe\LOCALDB#3F5A8627\tsql\query;Database=AWEfinal;Trusted_Connection=True;
+Server=np:\\.\pipe\LOCALDB#B9917A2A\tsql\query;Database=AWEfinal;Trusted_Connection=True;
 ```
 
 ### Option 4: SQL Server Express (if installed)

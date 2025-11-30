@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AWEfinal.BLL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70db3388b946fbd60cfa1bf84f021b870d7d2ad7")]
 [assembly: System.Reflection.AssemblyProductAttribute("AWEfinal.BLL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AWEfinal.BLL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

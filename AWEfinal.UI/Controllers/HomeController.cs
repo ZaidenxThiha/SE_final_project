@@ -1,29 +1,29 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using AWEfinal.BLL.Services;
 
-namespace AWEfinal.UI.Controllers
+namespace AWEfinal.UI.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly IWebHostEnvironment _environment;
+    private readonly ILogger<HomeController> _logger;
+
+    public HomeController(IWebHostEnvironment environment, ILogger<HomeController> logger)
     {
-        private readonly IProductService _productService;
-        private readonly ILogger<HomeController> _logger;
+        _environment = environment;
+        _logger = logger;
+    }
 
-        public HomeController(IProductService productService, ILogger<HomeController> logger)
+    [HttpGet]
+    public IActionResult Index()
+    {
+        var spaIndexPath = Path.Combine(_environment.WebRootPath, "app", "index.html");
+        if (!System.IO.File.Exists(spaIndexPath))
         {
-            _productService = productService;
-            _logger = logger;
+            _logger.LogWarning("SPA build not found at {Path}. Run `npm install && npm run build` inside ClientApp.", spaIndexPath);
+            return Content("Client build not found. Run `npm install && npm run build` inside AWEfinal.UI/ClientApp.", "text/plain");
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var products = await _productService.GetAllProductsAsync();
-            return View(products.Take(8).ToList());
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        return PhysicalFile(spaIndexPath, "text/html");
     }
 }
-

@@ -126,7 +126,12 @@
                                     <div class="awe-product-card__name">@product.Name</div>
                                     <div class="awe-product-card__category">@product.Category</div>
                                 </div>
-                                <a class="awe-product-card__add" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id" title="Add to cart">
+                                <a class="awe-product-card__add js-add-to-cart"
+                                   asp-controller="Cart"
+                                   asp-action="AddToCart"
+                                   asp-route-productId="@product.Id"
+                                   data-product-id="@product.Id"
+                                   title="Add to cart">
                                     <i class="bi bi-plus-lg"></i>
                                 </a>
                             </div>
@@ -140,7 +145,11 @@
                                 </a>
                                 @if (product.InStock && product.StockQuantity > 0)
                                 {
-                                    <a class="awe-btn awe-btn--light" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@product.Id">
+                                    <a class="awe-btn awe-btn--light js-add-to-cart"
+                                       asp-controller="Cart"
+                                       asp-action="AddToCart"
+                                       asp-route-productId="@product.Id"
+                                       data-product-id="@product.Id">
                                         Add to cart
                                     </a>
                                 }

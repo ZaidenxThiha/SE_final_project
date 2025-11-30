@@ -45,6 +45,12 @@ CREATE TABLE [Users] (
     [Email] NVARCHAR(100) NOT NULL,
     [PasswordHash] NVARCHAR(255) NOT NULL,
     [Name] NVARCHAR(100) NOT NULL,
+    [Phone] NVARCHAR(50) NULL,
+    [AddressLine1] NVARCHAR(150) NULL,
+    [AddressLine2] NVARCHAR(150) NULL,
+    [City] NVARCHAR(100) NULL,
+    [PostalCode] NVARCHAR(20) NULL,
+    [Country] NVARCHAR(100) NULL,
     [Role] NVARCHAR(20) NOT NULL DEFAULT 'customer',
     [CreatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
     CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
@@ -92,6 +98,7 @@ CREATE TABLE [Orders] (
     [TrackingNumber] NVARCHAR(50) NULL,
     [CreatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
     [UpdatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    [InventoryAdjusted] BIT NOT NULL DEFAULT 0,
     CONSTRAINT [PK_Orders] PRIMARY KEY ([Id]),
     CONSTRAINT [CK_Orders_Total] CHECK ([Total] >= 0),
     CONSTRAINT [CK_Orders_Status] CHECK ([Status] IN ('pending', 'paid', 'packaging', 'shipped', 'delivered', 'cancelled'))
@@ -172,12 +179,23 @@ GO
 -- Seed Data
 -- =============================================
 
--- Insert Admin User
--- Password: admin123 (stored as plain text for admin login - no hashing)
--- Note: Admin login uses plain text password comparison for simplicity
-INSERT INTO [Users] (Email, PasswordHash, Name, Role, CreatedAt)
-VALUES 
-    ('admin@electrostore.com', 'admin123', 'Admin User', 'admin', GETUTCDATE());
+-- Insert/Update Admin User (password hash for "admin123")
+DECLARE @AdminEmail NVARCHAR(256) = 'admin@electrostore.com';
+DECLARE @AdminHash NVARCHAR(88) = 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=';
+
+IF EXISTS (SELECT 1 FROM [Users] WHERE Email = @AdminEmail)
+BEGIN
+    UPDATE [Users]
+    SET PasswordHash = @AdminHash,
+        Name = 'Admin User',
+        Role = 'admin'
+    WHERE Email = @AdminEmail;
+END
+ELSE
+BEGIN
+    INSERT INTO [Users] (Email, PasswordHash, Name, Role, CreatedAt)
+    VALUES (@AdminEmail, @AdminHash, 'Admin User', 'admin', GETUTCDATE());
+END
 GO
 
 -- Insert Sample Products
@@ -262,4 +280,3 @@ PRINT '  Email: admin@electrostore.com';
 PRINT '  Password: admin123';
 PRINT '=============================================';
 GO
-

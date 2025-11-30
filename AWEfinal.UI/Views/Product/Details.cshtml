@@ -53,9 +53,6 @@
 
         <div class="awe-surface awe-product-panel">
             <div class="awe-product-price">$@Model.Price.ToString("N2")</div>
-            <div class="awe-tagline">
-                Inspired by the ProductDetailPage.tsx layout—clean typography, tactile borders, and responsive sections keep the focus on the product.
-            </div>
 
             <div class="awe-meta-grid">
                 <span><strong>Category:</strong> @Model.Category</span>
@@ -96,7 +93,11 @@
             <div class="awe-cta-group">
                 @if (Model.InStock && Model.StockQuantity > 0)
                 {
-                    <a class="awe-btn awe-btn--primary" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.Id">
+                    <a class="awe-btn awe-btn--primary js-add-to-cart"
+                       asp-controller="Cart"
+                       asp-action="AddToCart"
+                       asp-route-productId="@Model.Id"
+                       data-product-id="@Model.Id">
                         Add to cart
                     </a>
                 }

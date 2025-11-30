@@ -1,162 +1,100 @@
-# AWEfinal - 3-Tier Architecture E-Commerce Store
+# AWEfinal – Online Electronics Store (3-Tier)
 
-This is a complete 3-tier architecture web application built with ASP.NET Core, Entity Framework Core, and SQL Server LocalDB.
+AWEfinal is the proof-of-concept implementation for the **SE_FinalProject_Requirements_Sem1_2526** brief. It delivers a complete 3-tier system (DAL ➜ BLL ➜ UI) backed by SQL Server, exposes the customer-facing ASP.NET Core MVC site, and now adds the WinForms desktop dashboard demanded for staff operations.
 
-## Project Structure
+## Solution Layout
 
 ```
-AWEfinal/
-├── AWEfinal.DAL/          # Data Access Layer
-│   ├── Models/           # Entity Models
-│   ├── Repositories/      # Repository Pattern Implementation
-│   └── AWEfinalDbContext.cs
-├── AWEfinal.BLL/          # Business Logic Layer
-│   └── Services/         # Business Services
-├── AWEfinal.UI/          # Presentation Layer (ASP.NET Core MVC)
-│   ├── Controllers/      # MVC Controllers
-│   ├── Views/           # Razor Views
-│   └── wwwroot/         # Static Files
-└── AWEfinal.sln         # Solution File
+AWEfinal.sln
+├── AWEfinal.DAL/          # Entity Framework Core DbContext + Models + Repositories
+├── AWEfinal.BLL/          # Business services (products, orders, users)
+├── AWEfinal.UI/           # ASP.NET Core MVC app (customer & admin web portal)
+├── AWEfinal.AdminWinForms/# WinForms staff dashboard (secure login, CRUD, reports)
+└── docs/                  # Requirements alignment + future documents
 ```
 
-## Prerequisites
+## Architecture at a Glance
 
-- Visual Studio 2022 or later
-- .NET 8.0 SDK
-- SQL Server LocalDB (included with Visual Studio)
-- SQL Server Management Studio (SSMS) - Optional
+- **Database (MSSQL / LocalDB):** single shared instance, accessed exclusively via `AWEfinal.DAL`.
+- **Data Access Layer:** EF Core models (`Models/`) + repositories that encapsulate queries.
+- **Business Logic Layer:** service classes performing validation, pricing, and workflow rules.
+- **Presentation:**
+  - `AWEfinal.UI` ASP.NET Core MVC site for customers (browse, cart, checkout, order history) and basic admin pages.
+  - `AWEfinal.AdminWinForms` WinForms desktop for staff (login, product CRUD, order status tracking, revenue reports).
 
-## Setup Instructions
+## Getting Started
+
+### Prerequisites
+- .NET 8.0 SDK and Visual Studio 2022 (for both MVC + WinForms).
+- SQL Server LocalDB (ships with Visual Studio) or another SQL Server instance.
+- Optional: SQL Server Management Studio for database inspection.
 
 ### 1. Database Setup
+1. Launch SSMS or the Visual Studio SQL Server Object Explorer.
+2. Connect to `(localdb)\MSSQLLocalDB`.
+3. Create a database named `AWEfinal`.
+4. Update the `LocalDBConn` string in `AWEfinal.UI/appsettings.json` and `AWEfinal.AdminWinForms/appsettings.json` if your LocalDB pipe name differs.
 
-1. Open SQL Server Management Studio or SQL Server Object Explorer in Visual Studio
-2. Connect to LocalDB instance: `(localdb)\MSSQLLocalDB`
-3. Create a new database named `AWEfinal`
-4. The connection string in `appsettings.json` is already configured:
-   ```
-   Server=np:\\.\pipe\LOCALDB#3F5A8627\tsql\query;Database=AWEfinal;Trusted_Connection=True;
-   ```
-
-### 2. Run Entity Framework Migrations
-
-1. Open Package Manager Console in Visual Studio
-2. Select `AWEfinal.UI` as the default project
-3. Run the following commands:
-
-```powershell
-# Add Migration
-Add-Migration InitialCreate -Project AWEfinal.DAL -StartupProject AWEfinal.UI
-
-# Update Database
-Update-Database -Project AWEfinal.DAL -StartupProject AWEfinal.UI
 ```
-
-### 3. Seed Initial Data
-
-1. Run the SQL script in `AWEfinal.UI/Database/SeedData.sql` against your AWEfinal database
-2. This will create:
-   - Admin user (email: admin@electrostore.com, password: admin123)
-   - Sample products
-
-### 4. Run the Application
-
-1. Set `AWEfinal.UI` as the startup project
-2. Press F5 or click Run
-3. The application will open in your browser
-
-## Default Credentials
-
-- **Admin Account:**
-  - Email: admin@electrostore.com
-  - Password: admin123
-
-## Features
-
-### Customer Features
-
-- Browse products by category
-- View product details
-- Add products to cart
-- Checkout and place orders
-- View order history
-- User registration and login
-
-### Admin Features
-
-- Product management (Create, Read, Update, Delete)
-- Order management
-- Order status updates
-- Tracking number assignment
-
-## Architecture
-
-### Data Access Layer (DAL)
-
-- Entity Framework Core DbContext
-- Repository Pattern
-- Entity Models with Data Annotations
-
-### Business Logic Layer (BLL)
-
-- Service Layer Pattern
-- Business Rules and Validation
-- Password Hashing (SHA256)
-
-### Presentation Layer (UI)
-
-- ASP.NET Core MVC
-- Session-based Authentication
-- Razor Views
-- Controllers for each feature area
-
-## Technologies Used
-
-- **Backend:** ASP.NET Core 8.0
-- **ORM:** Entity Framework Core 8.0
-- **Database:** SQL Server LocalDB
-- **Frontend:** Bootstrap 5, Razor Views
-- **Architecture:** 3-Tier (DAL, BLL, UI)
-
-## Project Configuration
-
-### Connection String
-
-The connection string is configured in `AWEfinal.UI/appsettings.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "LocalDBConn": "Server=np:\\.\\pipe\\LOCALDB#3F5A8627\\tsql\\query;Database=AWEfinal;Trusted_Connection=True;"
-  }
+"ConnectionStrings": {
+  "LocalDBConn": "Data Source=np:\\.\pipe\LOCALDB#B9917A2A\tsql\query;Initial Catalog=AWEfinal;Integrated Security=True;MultipleActiveResultSets=true"
 }
 ```
 
-### Dependency Injection
+### 2. Apply EF Core Migrations
+```
+# From the Package Manager Console (Default project: AWEfinal.UI)
+Add-Migration InitialCreate -Project AWEfinal.DAL -StartupProject AWEfinal.UI
+Update-Database -Project AWEfinal.DAL -StartupProject AWEfinal.UI
+```
 
-All services and repositories are registered in `Program.cs` using dependency injection.
+### 3. Seed Sample Data
+Execute `AWEfinal.UI/Database/SeedData.sql` against `AWEfinal` to create the admin user and demo products.
 
-## Notes
+## Running the Applications
 
-- Session is used for authentication (stored in memory)
-- Password hashing uses SHA256
-- Order numbers and invoice numbers are auto-generated
-- All prices are stored as decimal(18,2)
+### ASP.NET Core MVC Site
+1. Set `AWEfinal.UI` as the startup project.
+2. Run (F5). The site opens at `https://localhost:<port>`.
+
+### WinForms Staff Dashboard
+1. Requires Windows host (or Windows VM) because of WinForms.
+2. Set `AWEfinal.AdminWinForms` as the startup project and run.
+3. Sign in with the admin credentials (below) to access dashboard metrics, product management, and order workflows.
+4. The WinForms app talks to the same database as the MVC site—ensure the DB is provisioned before launching.
+
+## Default Credentials
+- **Admin:** `admin@electrostore.com / admin123`
+- **Customer:** create via the public site registration flow.
+
+## Feature Set
+
+### Customer (Web)
+- Browse and filter products by category.
+- View product detail pages with photos/specs.
+- Add to cart, update quantities, checkout, and see order confirmations.
+- Maintain order history and profile data.
+
+### Staff/Admin (Web + WinForms)
+- Secure login via shared user table (admin role only).
+- Product CRUD with image uploads (web) and lightweight editor (WinForms).
+- Order management: status transitions, tracking numbers, cancellation control.
+- Dashboard metrics (total products/orders, revenue, average order value).
+- Reporting tab with timeframe-based revenue/volume breakdowns.
+
+## Documentation & Requirements Alignment
+- `docs/RequirementsAlignment.md` maps every rubric item (requirements spec, project plan, architecture diagrams, UML, traceability, automated tests, final report/demo) to its current status.
+- Add your Part 1/Part 2 deliverables (requirements document, UI/UX mockups, UML, ERD, traceability matrix) inside `docs/`.
+- Capture screenshots and a short video demo showing both the MVC site and WinForms dashboard for the final submission.
+
+## Testing
+- Current verification is manual plus full solution builds (`dotnet build AWEfinal.sln`).
+- The PDF requires EP/BVA unit tests targeting business logic—add a dedicated test project under `/tests` and link it to the BLL.
 
 ## Troubleshooting
-
-### Database Connection Issues
-
-- Ensure LocalDB is installed and running
-- Check that the database `AWEfinal` exists
-- Verify the connection string in `appsettings.json`
-
-### Migration Issues
-
-- Ensure all projects build successfully
-- Check that the DAL project is referenced correctly
-- Verify Entity Framework Core packages are installed
+- **LocalDB connection:** confirm the named pipe (see `sqllocaldb info`) and update both `appsettings.json` files accordingly.
+- **Admin login fails:** rerun `SeedData.sql` to recreate the seeded admin user.
+- **WinForms build on macOS/Linux:** use Windows with `EnableWindowsTargeting=true` (already set) or build inside a Windows VM.
 
 ## License
-
-This project is created for educational purposes.
+Educational use only (capstone project).

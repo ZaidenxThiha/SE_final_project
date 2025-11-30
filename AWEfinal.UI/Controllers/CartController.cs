@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AWEfinal.BLL.Services;
 using AWEfinal.DAL.Models;
+using AWEfinal.UI.Models;
 using System.Text.Json;
 
 namespace AWEfinal.UI.Controllers
@@ -48,13 +49,57 @@ namespace AWEfinal.UI.Controllers
                     ProductId = productId,
                     ProductName = product.Name,
                     Price = product.Price,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    ImageUrl = GetPrimaryImage(product)
                 });
             }
 
             SaveCart(cart);
             TempData["SuccessMessage"] = $"{product.Name} added to cart!";
             return RedirectToAction("Index", "Cart");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCartAjax([FromBody] AddToCartRequest request)
+        {
+            if (request == null || request.ProductId <= 0)
+                return BadRequest(new { success = false, message = "Invalid request." });
+
+            var quantity = request.Quantity <= 0 ? 1 : request.Quantity;
+            var product = await _productService.GetProductByIdAsync(request.ProductId);
+            if (product == null)
+            {
+                return NotFound(new { success = false, message = "Product not found." });
+            }
+
+            var cart = GetCart();
+            var existingItem = cart.FirstOrDefault(c => c.ProductId == request.ProductId);
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                cart.Add(new CartItem
+                {
+                    ProductId = request.ProductId,
+                    ProductName = product.Name,
+                    Price = product.Price,
+                    Quantity = quantity,
+                    ImageUrl = GetPrimaryImage(product)
+                });
+            }
+
+            SaveCart(cart);
+            var cartCount = cart.Sum(c => c.Quantity);
+
+            return Json(new
+            {
+                success = true,
+                message = $"{product.Name} added to cart!",
+                cartCount
+            });
         }
 
         [HttpPost]
@@ -195,7 +240,15 @@ namespace AWEfinal.UI.Controllers
             if (string.IsNullOrEmpty(cartJson))
                 return new List<CartItem>();
 
-            return JsonSerializer.Deserialize<List<CartItem>>(cartJson) ?? new List<CartItem>();
+            var items = JsonSerializer.Deserialize<List<CartItem>>(cartJson) ?? new List<CartItem>();
+            foreach (var item in items)
+            {
+                item.ImageUrl = string.IsNullOrEmpty(item.ImageUrl)
+                    ? "/images/products/placeholder.jpg"
+                    : item.ImageUrl;
+            }
+
+            return items;
         }
 
         private void SaveCart(List<CartItem> cart)
@@ -203,15 +256,32 @@ namespace AWEfinal.UI.Controllers
             var cartJson = JsonSerializer.Serialize(cart);
             HttpContext.Session.SetString("Cart", cartJson);
         }
-    }
 
-    public class CartItem
-    {
-        public int ProductId { get; set; }
-        public string ProductName { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int Quantity { get; set; }
-        public decimal Subtotal => Price * Quantity;
+        private string GetPrimaryImage(Product product)
+        {
+            if (!string.IsNullOrEmpty(product.Images))
+            {
+                try
+                {
+                    var images = JsonSerializer.Deserialize<List<string>>(product.Images);
+                    if (images != null && images.Any())
+                    {
+                        return images.First();
+                    }
+                }
+                catch
+                {
+                    // Ignore JSON parsing errors and fall back to default image
+                }
+            }
+
+            return "/images/products/placeholder.jpg";
+        }
+
+        public sealed class AddToCartRequest
+        {
+            public int ProductId { get; set; }
+            public int Quantity { get; set; } = 1;
+        }
     }
 }
-

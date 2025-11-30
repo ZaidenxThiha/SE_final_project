@@ -93,6 +93,48 @@ namespace AWEfinal.BLL.Services
             return await _userRepository.UpdateAsync(user);
         }
 
+        public async Task<User> UpdateProfileAsync(int userId, string name, string? phone, string? addressLine1,
+            string? addressLine2, string? city, string? postalCode, string? country)
+        {
+            var user = await _userRepository.GetByIdAsync(userId) ?? throw new ArgumentException("User not found", nameof(userId));
+
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name is required", nameof(name));
+
+            user.Name = name.Trim();
+            user.Phone = phone?.Trim();
+            user.AddressLine1 = addressLine1?.Trim();
+            user.AddressLine2 = addressLine2?.Trim();
+            user.City = city?.Trim();
+            user.PostalCode = postalCode?.Trim();
+            user.Country = country?.Trim();
+
+            return await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task ChangePasswordAsync(int userId, string currentPassword, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword))
+                throw new ArgumentException("New password is required", nameof(newPassword));
+
+            var user = await _userRepository.GetByIdAsync(userId) ?? throw new ArgumentException("User not found", nameof(userId));
+
+            // Allow admin fallback
+            if (user.Role == "admin" && user.Email.Equals("admin@electrostore.com", StringComparison.OrdinalIgnoreCase))
+            {
+                if (currentPassword != "admin123")
+                    throw new InvalidOperationException("Current password is incorrect.");
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(currentPassword) || !VerifyPassword(currentPassword, user.PasswordHash))
+                    throw new InvalidOperationException("Current password is incorrect.");
+            }
+
+            user.PasswordHash = HashPassword(newPassword);
+            await _userRepository.UpdateAsync(user);
+        }
+
         public async Task<bool> UserExistsAsync(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -117,4 +159,3 @@ namespace AWEfinal.BLL.Services
         }
     }
 }
-

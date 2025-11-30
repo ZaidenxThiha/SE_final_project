@@ -64,6 +64,9 @@ namespace AWEfinal.DAL.Models
         [Required]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        [Required]
+        public bool InventoryAdjusted { get; set; } = false;
+
         // Navigation properties
         [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
@@ -71,4 +74,3 @@ namespace AWEfinal.DAL.Models
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }
-

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>WinExe</OutputType>
+<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+<UseWindowsForms>true</UseWindowsForms>
+<ImplicitUsings>enable</ImplicitUsings>
+<Nullable>enable</Nullable>
+<EnableWindowsTargeting>true</EnableWindowsTargeting>
+<EnableDefaultItems>true</EnableDefaultItems></PropertyGroup>
+<ItemGroup>
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10"/>
+<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0"/>
+<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+</ItemGroup>
+<ItemGroup>
+<ProjectReference Include="..\\AWEfinal.BLL\\AWEfinal.BLL.csproj"/>
+<ProjectReference Include="..\\AWEfinal.DAL\\AWEfinal.DAL.csproj"/>
+</ItemGroup>
+<ItemGroup>
+<None Update="appsettings.json">
+<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+</None>
+</ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="DashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ProductEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

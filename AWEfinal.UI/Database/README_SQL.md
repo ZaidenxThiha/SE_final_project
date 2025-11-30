@@ -5,7 +5,7 @@
 1. **Open SQL Server Management Studio (SSMS)** or **SQL Server Object Explorer** in Visual Studio
 2. **Connect to LocalDB:**
    - Server name: `(localdb)\MSSQLLocalDB`
-   - Or use the pipe connection: `np:\\.\pipe\LOCALDB#3F5A8627\tsql\query`
+   - Or use the pipe connection: `np:\\.\pipe\LOCALDB#B9917A2A\tsql\query`
 3. **Open the SQL script:** `FullDatabaseScript.sql`
 4. **Execute the entire script** (F5 or Execute button)
 
@@ -47,7 +47,7 @@ The connection string in `appsettings.json` is configured for LocalDB:
 ```json
 {
   "ConnectionStrings": {
-    "LocalDBConn": "Server=np:\\.\\pipe\\LOCALDB#3F5A8627\\tsql\\query;Database=AWEfinal;Trusted_Connection=True;"
+    "LocalDBConn": "Server=np:\\.\\pipe\\LOCALDB#B9917A2A\\tsql\\query;Database=AWEfinal;Trusted_Connection=True;"
   }
 }
 ```
@@ -97,5 +97,5 @@ sqllocaldb start MSSQLLocalDB
 Try these connection strings:
 
 - `(localdb)\MSSQLLocalDB`
-- `np:\\.\pipe\LOCALDB#3F5A8627\tsql\query`
+- `np:\\.\pipe\LOCALDB#B9917A2A\tsql\query`
 - `Server=(localdb)\\MSSQLLocalDB;Database=AWEfinal;Trusted_Connection=True;`

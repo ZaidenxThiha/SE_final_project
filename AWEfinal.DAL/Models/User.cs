@@ -22,6 +22,24 @@ namespace AWEfinal.DAL.Models
         [StringLength(100)]
         public string Name { get; set; } = string.Empty;
 
+        [StringLength(50)]
+        public string? Phone { get; set; }
+
+        [StringLength(150)]
+        public string? AddressLine1 { get; set; }
+
+        [StringLength(150)]
+        public string? AddressLine2 { get; set; }
+
+        [StringLength(100)]
+        public string? City { get; set; }
+
+        [StringLength(20)]
+        public string? PostalCode { get; set; }
+
+        [StringLength(100)]
+        public string? Country { get; set; }
+
         [Required]
         [StringLength(20)]
         public string Role { get; set; } = "customer"; // "customer" or "admin"
@@ -33,4 +51,3 @@ namespace AWEfinal.DAL.Models
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
-

@@ -1,12 +1,26 @@
 using AWEfinal.DAL;
 using AWEfinal.DAL.Repositories;
 using AWEfinal.BLL.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+const string CorsPolicy = "ClientApp";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CorsPolicy, policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173", "https://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AWEfinalDbContext>(options =>
@@ -29,6 +43,10 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.None
+        : CookieSecurePolicy.Always;
 });
 
 var app = builder.Build();
@@ -38,12 +56,13 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors(CorsPolicy);
 
 app.UseSession();
 
@@ -53,5 +72,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+app.MapControllers();
 
+app.MapFallbackToFile("/app/index.html");
+
+app.Run();

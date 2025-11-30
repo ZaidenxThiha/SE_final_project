@@ -1,30 +1,32 @@
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.deps.json
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.pdb
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.dll
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.pdb
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.AssemblyReference.cache
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.GeneratedMSBuildEditorConfig.editorconfig
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfoInputs.cache
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfo.cs
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.CoreCompileInputs.cache
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.B2D8BB20.Up2Date
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\refint\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.pdb
-C:\Mac\Home\Desktop\SE LAB\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\ref\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.deps.json
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.pdb
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.dll
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.pdb
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.AssemblyReference.cache
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.GeneratedMSBuildEditorConfig.editorconfig
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfoInputs.cache
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfo.cs
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.CoreCompileInputs.cache
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.B2D8BB20.Up2Date
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\refint\AWEfinal.BLL.dll
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.pdb
-C:\Mac\Home\Desktop\SE LAB\FInal\AWEproject\AWEfinal.BLL\obj\Debug\net8.0\ref\AWEfinal.BLL.dll
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/bin/Debug/net8.0/AWEfinal.BLL.deps.json
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/bin/Debug/net8.0/AWEfinal.BLL.dll
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/bin/Debug/net8.0/AWEfinal.BLL.pdb
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/bin/Debug/net8.0/AWEfinal.DAL.dll
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/bin/Debug/net8.0/AWEfinal.DAL.pdb
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.csproj.AssemblyReference.cache
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.AssemblyInfoInputs.cache
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.AssemblyInfo.cs
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.csproj.CoreCompileInputs.cache
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.sourcelink.json
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.B2D8BB20.Up2Date
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.dll
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/refint/AWEfinal.BLL.dll
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/AWEfinal.BLL.pdb
+/Users/admin/Documents/GitHub/test/SE_final_project/SE_final_project/AWEfinal.BLL/obj/Debug/net8.0/ref/AWEfinal.BLL.dll
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.deps.json
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.dll
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.BLL.pdb
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.dll
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\bin\Debug\net8.0\AWEfinal.DAL.pdb
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.AssemblyReference.cache
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfoInputs.cache
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.AssemblyInfo.cs
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.csproj.CoreCompileInputs.cache
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.sourcelink.json
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.B2D8BB20.Up2Date
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.dll
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\refint\AWEfinal.BLL.dll
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\AWEfinal.BLL.pdb
+C:\Mac\Home\Documents\GitHub\test\SE_final_project\SE_final_project\AWEfinal.BLL\obj\Debug\net8.0\ref\AWEfinal.BLL.dll

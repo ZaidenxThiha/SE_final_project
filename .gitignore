@@ -1,0 +1,22 @@
+# Solution / build artifacts
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+bin/
+obj/
+.vs/
+
+# Front-end artifacts
+AWEfinal.UI/ClientApp/node_modules/
+AWEfinal.UI/ClientApp/.vite/
+AWEfinal.UI/ClientApp/dist/
+AWEfinal.UI/ClientApp/build/
+AWEfinal.UI/ClientApp/.DS_Store
+AWEfinal.UI/wwwroot/app/
+!AWEfinal.UI/wwwroot/app/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
