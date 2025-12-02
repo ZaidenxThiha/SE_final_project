@@ -61,22 +61,21 @@ namespace AWEfinal.BLL.Services
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 return null;
 
-            var user = await _userRepository.GetByEmailAsync(email.ToLower().Trim());
+            var normalizedEmail = email.ToLower().Trim();
+            var user = await _userRepository.GetByEmailAsync(normalizedEmail);
             if (user == null)
                 return null;
 
-            // Special handling for admin login - check plain text password
-            if (user.Role == "admin" && user.Email.ToLower() == "admin@electrostore.com")
+            // Verify via stored hash for all users/roles
+            if (!string.IsNullOrWhiteSpace(user.PasswordHash) && VerifyPassword(password, user.PasswordHash))
+                return user;
+
+            // Admin fallback: allow default credentials only when no hash is stored
+            if (string.IsNullOrWhiteSpace(user.PasswordHash)
+                && string.Equals(normalizedEmail, "admin@electrostore.com", StringComparison.Ordinal)
+                && string.Equals(password, "admin123", StringComparison.Ordinal))
             {
-                // For admin, check plain text password directly
-                if (password == "admin123")
-                    return user;
-            }
-            else
-            {
-                // For regular users, use hashed password verification
-                if (VerifyPassword(password, user.PasswordHash))
-                    return user;
+                return user;
             }
 
             return null;
@@ -119,17 +118,8 @@ namespace AWEfinal.BLL.Services
 
             var user = await _userRepository.GetByIdAsync(userId) ?? throw new ArgumentException("User not found", nameof(userId));
 
-            // Allow admin fallback
-            if (user.Role == "admin" && user.Email.Equals("admin@electrostore.com", StringComparison.OrdinalIgnoreCase))
-            {
-                if (currentPassword != "admin123")
-                    throw new InvalidOperationException("Current password is incorrect.");
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(currentPassword) || !VerifyPassword(currentPassword, user.PasswordHash))
-                    throw new InvalidOperationException("Current password is incorrect.");
-            }
+            if (string.IsNullOrWhiteSpace(currentPassword) || !VerifyPassword(currentPassword, user.PasswordHash))
+                throw new InvalidOperationException("Current password is incorrect.");
 
             user.PasswordHash = HashPassword(newPassword);
             await _userRepository.UpdateAsync(user);
@@ -145,11 +135,8 @@ namespace AWEfinal.BLL.Services
 
         private string HashPassword(string password)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(hashedBytes);
-            }
+            var hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
         }
 
         private bool VerifyPassword(string password, string passwordHash)

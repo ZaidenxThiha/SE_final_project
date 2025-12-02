@@ -130,6 +130,10 @@
                    class="admin-tab @(currentAction == "analytics" ? "active" : "")">
                     <i class="bi bi-bar-chart"></i> Analytics
                 </a>
+                <a href="@Url.Action("ChangePassword", "Admin")" 
+                   class="admin-tab @(currentAction == "changepassword" ? "active" : "")">
+                    <i class="bi bi-shield-lock"></i> Account
+                </a>
             </div>
         </div>
     </div>
@@ -146,4 +150,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-

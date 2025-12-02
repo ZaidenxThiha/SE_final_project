@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "VNPay Return";
+    var message = ViewBag.Message as string ?? "Payment status unknown";
+    var txnRef = ViewBag.TxnRef as string ?? "";
+    var amount = ViewBag.Amount as string ?? "";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h3 class="mb-3">VNPay Payment</h3>
+        <p class="mb-2"><strong>Status:</strong> @message</p>
+        @if (!string.IsNullOrEmpty(txnRef))
+        {
+            <p class="mb-2"><strong>Transaction:</strong> @txnRef</p>
+        }
+        @if (!string.IsNullOrEmpty(amount))
+        {
+            <p class="mb-4"><strong>Amount:</strong> @amount</p>
+        }
+        <a class="btn btn-primary" href="@Url.Action("Index", "Order")">Back to Orders</a>
+    </div>
+</div>

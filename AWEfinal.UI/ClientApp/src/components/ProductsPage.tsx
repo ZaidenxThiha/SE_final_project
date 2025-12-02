@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
 import type { Product } from "../types";
 
@@ -22,6 +22,10 @@ export function ProductsPage({
   const [selectedFilter, setSelectedFilter] = useState("Price Increasing");
   const [currentPage, setCurrentPage] = useState(1);
   const [localCategory, setLocalCategory] = useState<string | null>(selectedCategory || null);
+
+  useEffect(() => {
+    setLocalCategory(selectedCategory || null);
+  }, [selectedCategory]);
   
   const categories = [
     "All Categories",

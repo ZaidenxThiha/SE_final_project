@@ -1,6 +1,7 @@
 using AWEfinal.DAL;
 using AWEfinal.DAL.Repositories;
 using AWEfinal.BLL.Services;
+using AWEfinal.UI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +36,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+
+// VNPay settings
+builder.Services.Configure<VnPaySettings>(builder.Configuration.GetSection("VNPay"));
 
 // Add Session
 builder.Services.AddDistributedMemoryCache();

@@ -23,14 +23,14 @@ public class AuthApiController : ControllerBase
         var userId = HttpContext.Session.GetInt32("UserId");
         if (userId == null)
         {
-            return Unauthorized();
+            return Ok(null);
         }
 
         var user = await _userService.GetUserByIdAsync(userId.Value);
         if (user == null)
         {
             HttpContext.Session.Clear();
-            return Unauthorized();
+            return Ok(null);
         }
 
         return Ok(user.ToDto());

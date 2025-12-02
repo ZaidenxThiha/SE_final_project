@@ -23,7 +23,7 @@ The `FullDatabaseScript.sql` script:
 4. **Creates indexes** for performance optimization
 5. **Creates foreign key constraints** for data integrity
 6. **Inserts seed data:**
-   - Admin user (admin@electrostore.com / admin123)
+   - Admin user (admin@electrostore.com / set your own; hash stored)
    - 24 sample products across all categories
 
 ## Alternative: Using Entity Framework Migrations
@@ -55,7 +55,7 @@ The connection string in `appsettings.json` is configured for LocalDB:
 ## Default Admin Credentials
 
 - **Email:** admin@electrostore.com
-- **Password:** admin123
+- **Password:** set your own (hash stored; update scripts accordingly)
 
 ## Verification
 

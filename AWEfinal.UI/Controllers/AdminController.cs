@@ -9,21 +9,26 @@ namespace AWEfinal.UI.Controllers
     {
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
         private readonly ILogger<AdminController> _logger;
         private readonly IWebHostEnvironment _environment;
 
-        public AdminController(IProductService productService, IOrderService orderService, ILogger<AdminController> logger, IWebHostEnvironment environment)
+        public AdminController(
+            IProductService productService,
+            IOrderService orderService,
+            IUserService userService,
+            ILogger<AdminController> logger,
+            IWebHostEnvironment environment)
         {
             _productService = productService;
             _orderService = orderService;
+            _userService = userService;
             _logger = logger;
             _environment = environment;
         }
 
-        private bool IsAdmin()
-        {
-            return HttpContext.Session.GetString("UserRole") == "admin";
-        }
+        private bool IsAdmin() => HttpContext.Session.GetString("UserRole") == "admin";
+        private bool IsStaff() => HttpContext.Session.GetString("UserRole") is "admin" or "agent";
 
         public async Task<IActionResult> Index()
         {
@@ -47,7 +52,7 @@ namespace AWEfinal.UI.Controllers
         // Product Management
         public async Task<IActionResult> Products()
         {
-            if (!IsAdmin())
+            if (!IsStaff())
                 return RedirectToAction("Login", "Auth");
 
             var products = await _productService.GetAllProductsAsync();
@@ -288,6 +293,53 @@ namespace AWEfinal.UI.Controllers
             return View(order);
         }
 
+        // Account
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Auth");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(string currentPassword, string newPassword, string confirmPassword)
+        {
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Auth");
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+                return RedirectToAction("Login", "Auth");
+
+            if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword))
+            {
+                ModelState.AddModelError(string.Empty, "Current and new password are required.");
+                return View();
+            }
+
+            if (newPassword != confirmPassword)
+            {
+                ModelState.AddModelError(nameof(confirmPassword), "New password and confirmation do not match.");
+                return View();
+            }
+
+            try
+            {
+                await _userService.ChangePasswordAsync(userId.Value, currentPassword, newPassword);
+                TempData["SuccessMessage"] = "Password updated successfully.";
+                return RedirectToAction(nameof(ChangePassword));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                _logger.LogWarning(ex, "Failed to change password for admin user {UserId}", userId.Value);
+                return View();
+            }
+        }
+
         // Analytics
         public async Task<IActionResult> Analytics(string period = "month")
         {
@@ -396,4 +448,3 @@ namespace AWEfinal.UI.Controllers
         }
     }
 }
-

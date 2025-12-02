@@ -10,7 +10,7 @@ SELECT Id, Email, Name, Role, PasswordHash, LEN(PasswordHash) as HashLength FROM
 GO
 
 -- Verify the hash format
--- The correct hash for "admin123" using SHA256 + Base64 should be: jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=
+-- The correct hash for "admin123" using SHA256 + Base64 should be: JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=
 -- This is 44 characters long (Base64 encoded SHA256 hash)
 
 -- Delete existing admin if it exists (to recreate with correct password)
@@ -20,7 +20,7 @@ GO
 -- Insert admin user with plain text password (no hashing)
 -- Password: admin123
 INSERT INTO [Users] (Email, PasswordHash, Name, Role, CreatedAt)
-VALUES ('admin@electrostore.com', 'admin123', 'Admin User', 'admin', GETUTCDATE());
+VALUES ('admin@electrostore.com', 'JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=', 'Admin User', 'admin', GETUTCDATE());
 GO
 
 -- Verify the admin user was created correctly
@@ -48,4 +48,3 @@ PRINT '  Email: admin@electrostore.com';
 PRINT '  Password: admin123';
 PRINT '=============================================';
 GO
-

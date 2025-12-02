@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { User } from '../types';
+import type { User } from '../types';
 import { ProductManagement } from './ProductManagement';
 import { OrderManagement } from './OrderManagement';
 import { Analytics } from './Analytics';
-import { Package, BarChart3, ShoppingBag, Settings } from 'lucide-react';
+import { Package, BarChart3, ShoppingBag } from 'lucide-react';
 
 interface AdminDashboardProps {
   user: User;

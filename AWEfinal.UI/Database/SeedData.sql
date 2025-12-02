@@ -4,11 +4,10 @@
 USE AWEfinal;
 GO
 
--- Insert Admin User
--- Password: admin123 (stored as plain text for admin login - no hashing)
--- Note: Admin login uses plain text password comparison for simplicity
+-- Insert Admin User (hash your desired password before inserting)
+-- Example hash for "admin123": JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=
 INSERT INTO Users (Email, PasswordHash, Name, Role, CreatedAt)
-VALUES ('admin@electrostore.com', 'admin123', 'Admin User', 'admin', GETUTCDATE());
+VALUES ('admin@electrostore.com', 'JAvlGPq9JyTdtvBO6x2llnRI1+gxwIyPqCKAn3THIKk=', 'Admin User', 'admin', GETUTCDATE());
 GO
 
 -- Insert Sample Products
@@ -20,4 +19,3 @@ VALUES
 ('AirPods Max', 12999.00, 'Headphones', 'Premium over-ear headphones with active noise cancellation', NULL, '["Space Grey", "Silver", "Pink", "Green", "Sky Blue"]', 4.0, '[]', '["Active Noise Cancellation", "Transparency mode", "Spatial audio"]', 1, GETUTCDATE()),
 ('Samsung QLED 65"', 35999.00, 'Smart TVs', 'Stunning 4K QLED TV with quantum dot technology', NULL, '["Titan Gray"]', 5.0, '[]', '["65-inch QLED 4K display", "Quantum HDR", "Object Tracking Sound"]', 1, GETUTCDATE());
 GO
-

@@ -15,6 +15,7 @@ namespace AWEfinal.AdminWinForms
     {
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
 
         private User? _currentUser;
 
@@ -72,10 +73,11 @@ namespace AWEfinal.AdminWinForms
         private List<(string Label, decimal Value)> _revenuePoints = new();
         private List<(string Label, int Orders, int Products)> _orderPoints = new();
 
-        public DashboardForm(IProductService productService, IOrderService orderService)
+        public DashboardForm(IProductService productService, IOrderService orderService, IUserService userService)
         {
             _productService = productService;
             _orderService = orderService;
+            _userService = userService;
             InitializeComponent();
         }
 
@@ -140,8 +142,8 @@ namespace AWEfinal.AdminWinForms
             {
                 BackColor = Hex("#073634"),
                 Dock = DockStyle.Top,
-                Height = 90,
-                Padding = new Padding(24)
+                Height = 110,
+                Padding = new Padding(16)
             };
 
             var title = new Label
@@ -163,23 +165,200 @@ namespace AWEfinal.AdminWinForms
                 Margin = new Padding(20, 32, 0, 0)
             };
 
+            var buttonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Right,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Height = 60,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                Padding = new Padding(0, 8, 24, 8), // give breathing room from the window edge
+                BackColor = Color.Transparent,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Margin = new Padding(0)
+            };
+
+            var changePasswordButton = new Button
+            {
+                Text = "Change Password",
+                Width = 170,
+                Height = 44,
+                BackColor = Color.White,
+                ForeColor = Color.Black,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(0, 0, 12, 0),
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold)
+            };
+            changePasswordButton.FlatAppearance.BorderSize = 2;
+            changePasswordButton.FlatAppearance.BorderColor = Color.Black;
+            changePasswordButton.Click += async (_, _) => await ShowChangePasswordDialogAsync();
+
             var logoutButton = new Button
             {
                 Text = "Logout",
-                Dock = DockStyle.Right,
                 Width = 130,
-                Height = 40,
-                BackColor = Hex("#EDEECE"),
-                FlatStyle = FlatStyle.Flat
+                Height = 44,
+                BackColor = Color.White,
+                ForeColor = Color.Black,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold)
             };
             logoutButton.FlatAppearance.BorderSize = 2;
             logoutButton.FlatAppearance.BorderColor = Color.Black;
             logoutButton.Click += (_, _) => Close();
 
-            panel.Controls.Add(logoutButton);
+            buttonPanel.Controls.Add(changePasswordButton);
+            buttonPanel.Controls.Add(logoutButton);
+
+            panel.Controls.Add(buttonPanel);
             panel.Controls.Add(subtitle);
             panel.Controls.Add(title);
             return panel;
+        }
+
+        private async Task ShowChangePasswordDialogAsync()
+        {
+            if (_currentUser == null)
+            {
+                MessageBox.Show("User context not available. Please log in again.", "Change Password",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var dialog = new Form
+            {
+                Text = "Change Password",
+                Size = new Size(520, 500),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                StartPosition = FormStartPosition.CenterParent,
+                Font = new Font("Segoe UI", 10f),
+                BackColor = Hex("#EDEECE")
+            };
+
+            var layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 4,
+                Padding = new Padding(18, 18, 18, 8)
+            };
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180));
+            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+
+            var currentInput = new TextBox { UseSystemPasswordChar = true, Dock = DockStyle.Fill, Margin = new Padding(3, 12, 3, 6) };
+            var newInput = new TextBox { UseSystemPasswordChar = true, Dock = DockStyle.Fill, Margin = new Padding(3, 12, 3, 6) };
+            var confirmInput = new TextBox { UseSystemPasswordChar = true, Dock = DockStyle.Fill, Margin = new Padding(3, 12, 3, 6) };
+
+            layout.Controls.Add(new Label { Text = "Current password", AutoSize = true, Padding = new Padding(0, 16, 0, 0) }, 0, 0);
+            layout.Controls.Add(currentInput, 1, 0);
+            layout.Controls.Add(new Label { Text = "New password", AutoSize = true, Padding = new Padding(0, 16, 0, 0) }, 0, 1);
+            layout.Controls.Add(newInput, 1, 1);
+            layout.Controls.Add(new Label { Text = "Confirm new password", AutoSize = true, Padding = new Padding(0, 16, 0, 0) }, 0, 2);
+            layout.Controls.Add(confirmInput, 1, 2);
+
+            var statusLabel = new Label
+            {
+                ForeColor = Color.Firebrick,
+                AutoSize = true,
+                Padding = new Padding(0, 6, 0, 0),
+                Dock = DockStyle.Top
+            };
+            layout.Controls.Add(statusLabel, 1, 3);
+
+            var buttonPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.RightToLeft,
+                Dock = DockStyle.Bottom,
+                Padding = new Padding(18, 10, 18, 10),
+                AutoSize = false,
+                Height = 80,
+                BackColor = Color.Transparent
+            };
+
+            var saveButton = new Button
+            {
+                Text = "Update",
+                Width = 130,
+                Height = 36,
+                BackColor = Hex("#073634"),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(6, 6, 0, 0)
+            };
+            saveButton.FlatAppearance.BorderSize = 2;
+            saveButton.FlatAppearance.BorderColor = Color.Black;
+
+            var cancelButton = new Button
+            {
+                Text = "Cancel",
+                Width = 130,
+                Height = 36,
+                BackColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(6, 6, 6, 0)
+            };
+            cancelButton.FlatAppearance.BorderSize = 2;
+            cancelButton.FlatAppearance.BorderColor = Color.Black;
+            cancelButton.Click += (_, _) => dialog.Close();
+
+            buttonPanel.Controls.Add(saveButton);
+            buttonPanel.Controls.Add(cancelButton);
+
+            var dialogContent = new Panel { Dock = DockStyle.Fill };
+            dialogContent.Controls.Add(layout);
+            dialog.Controls.Add(buttonPanel);
+            dialog.Controls.Add(dialogContent);
+            dialog.AcceptButton = saveButton;
+            dialog.CancelButton = cancelButton;
+
+            saveButton.Click += async (_, _) =>
+            {
+                statusLabel.Text = string.Empty;
+
+                if (string.IsNullOrWhiteSpace(currentInput.Text) || string.IsNullOrWhiteSpace(newInput.Text))
+                {
+                    statusLabel.Text = "Current and new password are required.";
+                    return;
+                }
+
+                if (newInput.Text.Length < 8)
+                {
+                    statusLabel.Text = "New password must be at least 8 characters.";
+                    return;
+                }
+
+                if (newInput.Text != confirmInput.Text)
+                {
+                    statusLabel.Text = "New password and confirmation do not match.";
+                    return;
+                }
+
+                try
+                {
+                    saveButton.Enabled = false;
+                    await _userService.ChangePasswordAsync(_currentUser.Id, currentInput.Text, newInput.Text);
+                    MessageBox.Show("Password updated successfully.", "Change Password", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    dialog.Close();
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = ex.Message;
+                }
+                finally
+                {
+                    saveButton.Enabled = true;
+                }
+            };
+
+            dialog.ShowDialog(this);
         }
 
         private Panel CreateNavPanel()

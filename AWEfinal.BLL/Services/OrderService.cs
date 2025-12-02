@@ -55,12 +55,6 @@ namespace AWEfinal.BLL.Services
             order.OrderNumber = GenerateOrderNumber();
             order.InvoiceNumber = GenerateInvoiceNumber();
 
-            // Calculate total
-            order.Total = orderItems.Sum(oi => oi.Subtotal);
-            order.Status = "pending";
-            order.CreatedAt = DateTime.UtcNow;
-            order.UpdatedAt = DateTime.UtcNow;
-
             // Validate products exist
             foreach (var item in orderItems)
             {
@@ -72,6 +66,12 @@ namespace AWEfinal.BLL.Services
                 item.Subtotal = item.Price * item.Quantity;
                 item.Order = order;
             }
+
+            // Calculate total after authoritative pricing
+            order.Total = orderItems.Sum(oi => oi.Subtotal);
+            order.Status = "pending";
+            order.CreatedAt = DateTime.UtcNow;
+            order.UpdatedAt = DateTime.UtcNow;
 
             order.OrderItems = orderItems;
             return await _orderRepository.CreateAsync(order);

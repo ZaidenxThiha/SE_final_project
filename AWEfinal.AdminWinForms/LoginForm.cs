@@ -44,7 +44,10 @@ namespace AWEfinal.AdminWinForms
             try
             {
                 var user = await _userService.LoginUserAsync(email, password);
-                if (user == null || !string.Equals(user.Role, "admin", StringComparison.OrdinalIgnoreCase))
+                var isAdmin = user != null && user.Role.Equals("admin", StringComparison.OrdinalIgnoreCase);
+                var isStaff = user != null && user.Role.Equals("staff", StringComparison.OrdinalIgnoreCase);
+
+                if (!isAdmin && !isStaff)
                 {
                     statusLabel.ForeColor = Color.Firebrick;
                     statusLabel.Text = "Invalid credentials or insufficient privileges.";

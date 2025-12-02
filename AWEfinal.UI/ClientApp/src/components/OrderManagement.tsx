@@ -42,6 +42,135 @@ export function OrderManagement() {
     }
   };
 
+  const handlePrintReceipt = (order: Order) => {
+    const lineSubtotal = order.items.reduce((sum, item) => sum + item.subtotal, 0);
+    const vat = lineSubtotal * 0.1;
+    const shipping = Math.max(order.total - lineSubtotal - vat, 0);
+
+    const printWindow = window.open("", "_blank", "width=800,height=600");
+    if (!printWindow) {
+      toast.error("Unable to open print window.");
+      return;
+    }
+
+    const doc = printWindow.document;
+    const createdDate = new Date(order.createdAt).toLocaleDateString();
+
+    doc.write(`<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Receipt ${order.invoiceNumber}</title>
+    <style>
+      body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; }
+      h1, h2, h3, h4 { margin: 0 0 8px; }
+      .header { display: flex; justify-content: space-between; margin-bottom: 16px; }
+      .section { margin-bottom: 16px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+      th, td { border-bottom: 1px solid #ddd; padding: 6px 4px; font-size: 13px; }
+      th { text-align: left; }
+      .totals { width: 260px; margin-left: auto; margin-top: 12px; font-size: 13px; }
+      .totals-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+      .totals-row.total { border-top: 2px solid #000; padding-top: 6px; margin-top: 6px; }
+      .footer { margin-top: 24px; font-size: 11px; text-align: center; color: #555; }
+      @media print {
+        body { margin: 12mm; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <h2>AWE Electronics</h2>
+        <div style="font-size: 13px; color: #555;">
+          <div>Glenferrie Road</div>
+          <div>Melbourne, Australia</div>
+          <div>Phone: 03-00000000</div>
+          <div>Email: sales@awe.com</div>
+        </div>
+      </div>
+      <div style="text-align: right; font-size: 13px;">
+        <h3>RECEIPT</h3>
+        <div><strong>Invoice #:</strong> ${order.invoiceNumber}</div>
+        <div><strong>Date:</strong> ${createdDate}</div>
+        <div><strong>Status:</strong> ${order.status.toUpperCase()}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Customer</h4>
+      <div style="font-size: 13px;">
+        <div>${order.shippingAddress.fullName}</div>
+        <div>${order.shippingAddress.address}</div>
+        <div>${order.shippingAddress.city}, ${order.shippingAddress.postalCode}</div>
+        <div>${order.shippingAddress.country}</div>
+        <div>Phone: ${order.shippingAddress.phone}</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Items</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th style="text-align:right;">Qty</th>
+            <th style="text-align:right;">Price</th>
+            <th style="text-align:right;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${order.items
+            .map(
+              (item) => `
+          <tr>
+            <td>${item.productName}</td>
+            <td style="text-align:right;">${item.quantity}</td>
+            <td style="text-align:right;">${formatCurrency(item.price)}</td>
+            <td style="text-align:right;">${formatCurrency(item.subtotal)}</td>
+          </tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="totals">
+      <div class="totals-row">
+        <span>Subtotal:</span>
+        <span>${formatCurrency(lineSubtotal)}</span>
+      </div>
+      <div class="totals-row">
+        <span>VAT (10%):</span>
+        <span>${formatCurrency(vat)}</span>
+      </div>
+      <div class="totals-row">
+        <span>Shipping:</span>
+        <span>${formatCurrency(shipping)}</span>
+      </div>
+      <div class="totals-row total">
+        <span><strong>Total:</strong></span>
+        <span><strong>${formatCurrency(order.total)}</strong></span>
+      </div>
+    </div>
+
+    <div class="section" style="font-size: 13px; margin-top: 12px;">
+      <div><strong>Payment Method:</strong> ${order.paymentMethod?.toUpperCase() ?? ""}</div>
+      ${order.trackingNumber ? `<div><strong>Tracking Number:</strong> ${order.trackingNumber}</div>` : ""}
+    </div>
+
+    <div class="footer">
+      <div>Thank you for your purchase!</div>
+      <div>For questions about this receipt, contact us at sales@awe.com</div>
+    </div>
+  </body>
+</html>`);
+
+    doc.close();
+    printWindow.focus();
+    printWindow.print();
+  };
+
   const getStatusColor = (status: Order["status"]) => {
     switch (status) {
       case "pending":
@@ -187,6 +316,16 @@ export function OrderManagement() {
                     <option value="delivered">Delivered</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
+                </div>
+
+                <div className="pt-3 border-t border-gray-200">
+                  <button
+                    onClick={() => handlePrintReceipt(selectedOrder)}
+                    className="w-full px-3 py-2 border-2 border-black rounded text-sm hover:bg-white"
+                    style={{ backgroundColor: "#EDEECE" }}
+                  >
+                    Print Receipt
+                  </button>
                 </div>
               </div>
             </div>

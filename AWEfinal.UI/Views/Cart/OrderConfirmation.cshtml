@@ -68,10 +68,12 @@
             <a href="@Url.Action("Index", "Order")" class="btn btn-secondary">
                 <i class="bi bi-list-ul"></i> View My Orders
             </a>
+            <a href="@Url.Action("VnPayQr", "Payment", new { orderId = Model.Id })" class="btn btn-outline-success">
+                <i class="bi bi-qr-code-scan"></i> Pay with VNPay
+            </a>
             <a href="@Url.Action("PrintReceipt", "Cart", new { id = Model.Id })" target="_blank" class="btn btn-success">
                 <i class="bi bi-printer"></i> Print Receipt
             </a>
         </div>
     </div>
 </div>
-

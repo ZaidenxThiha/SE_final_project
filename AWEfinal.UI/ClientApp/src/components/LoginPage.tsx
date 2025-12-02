@@ -119,12 +119,7 @@ export function LoginPage({ onLogin, isModal = false, onClose }: LoginPageProps)
         </button>
       </div>
 
-      {isLogin && (
-        <div className="mt-4 p-3 bg-gray-100 border border-gray-300 rounded text-xs">
-          <p className="mb-1">Demo Credentials:</p>
-          <p>Admin: admin@electrostore.com / admin123</p>
-        </div>
-      )}
+
     </div>
   );
 

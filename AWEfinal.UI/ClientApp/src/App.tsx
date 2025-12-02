@@ -15,6 +15,7 @@ import { toast, Toaster } from "sonner";
 import { ProductCard } from "./components/ProductCard";
 import { ProductsPage } from "./components/ProductsPage";
 import { ProductDetailPage } from "./components/ProductDetailPage";
+import { SearchResultsPage } from "./components/SearchResultsPage";
 import { EnhancedCartPage } from "./components/EnhancedCartPage";
 import { LoginPage } from "./components/LoginPage";
 import { AdminDashboard } from "./components/AdminDashboard";
@@ -29,6 +30,7 @@ import type { Product, CartSummary, User, Order, ShippingAddress } from "./types
 type PageType =
   | "home"
   | "products"
+  | "search"
   | "product-detail"
   | "cart"
   | "admin"
@@ -50,6 +52,7 @@ export default function App() {
   const [cartLoading, setCartLoading] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const loadProducts = useCallback(async () => {
     setProductsLoading(true);
@@ -278,6 +281,19 @@ export default function App() {
     []
   );
 
+  const searchResults = useMemo(() => {
+    const term = searchQuery.trim().toLowerCase();
+    if (!term) {
+      return products;
+    }
+
+    return products.filter((product) => {
+      const nameMatch = product.name?.toLowerCase().includes(term);
+      const categoryMatch = product.category?.toLowerCase().includes(term);
+      return Boolean(nameMatch || categoryMatch);
+    });
+  }, [products, searchQuery]);
+
   if (isBootstrapping) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#EDEECE" }}>
@@ -382,6 +398,19 @@ export default function App() {
                   <input
                     type="text"
                     placeholder="Looking for something? We got you!"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setSelectedCategory(null);
+                      setCurrentPage("search");
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        setSelectedCategory(null);
+                        setCurrentPage("search");
+                      }
+                    }}
                     className="w-full pl-12 pr-12 py-3 rounded-full bg-white text-sm text-gray-800 shadow-inner focus:outline-none text-center"
                   />
                 </div>
@@ -484,6 +513,14 @@ export default function App() {
               products={products}
               selectedCategory={selectedCategory}
               isLoading={productsLoading}
+              onProductClick={handleProductClick}
+              onAddToCart={handleAddToCart}
+            />
+          ) : currentPage === "search" ? (
+            <SearchResultsPage
+              products={searchResults}
+              isLoading={productsLoading}
+              query={searchQuery}
               onProductClick={handleProductClick}
               onAddToCart={handleAddToCart}
             />
